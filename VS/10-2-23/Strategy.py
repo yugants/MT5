@@ -256,45 +256,48 @@ class LiveTrade:
 
                     if current_candle["candle"] == "R":
                         # Calculate the overlap range between the two candles
-                        overlap_percentage = (
-                            (
-                                min(current_candle["open"], entry_candle["close"])
-                                - max(current_candle["close"], entry_candle["open"])
-                            )
-                            / current_candle_size
-                        ) * 100
 
-                        if (
-                            current_candle["candle"] == "R"
-                            and current_candle["open"] <= entry_candle["close"]
-                            and current_candle_size >= 0.5 * entry_candle_size
-                            and current_candle_size <= 1.2 * entry_candle_size
-                            and overlap_percentage >= 30
-                        ):
-                            for j in range(i + 1, entry_index):
-                                intermediate_candle = self.df.iloc[j]
-                                #                          If intermediate candle goes below 0.02% of red candle no trade
-                                if (
-                                    max(
-                                        intermediate_candle["open"],
-                                        intermediate_candle["close"],
-                                    )
-                                    < current_candle["open"]
-                                    and j < entry_index - 1
-                                    and (
-                                        current_candle["close"]
-                                        - current_candle["close"] / 100 * 0.02
-                                    )
-                                    < intermediate_candle["close"]
-                                ):
-                                    continue
+                        overlap_size = (min(current_candle["open"], entry_candle["close"])
+                                - max(current_candle["close"], entry_candle["open"]))
+                        
+                        if overlap_size > 0:
 
-                                elif j == entry_index - 1:
-                                    return True
+                            overlap_percentage = (
+                            overlap_size
+                                / current_candle_size
+                            ) * 100
 
-                                else:
-                                    return False
-                            break
+                            if (
+                                current_candle["candle"] == "R"
+                                and current_candle["open"] <= entry_candle["close"]
+                                and current_candle_size >= 0.5 * entry_candle_size
+                                and current_candle_size <= 1.2 * entry_candle_size
+                                and overlap_percentage >= 30
+                            ):
+                                for j in range(i + 1, entry_index):
+                                    intermediate_candle = self.df.iloc[j]
+                                    #                          If intermediate candle goes below 0.02% of red candle no trade
+                                    if (
+                                        max(
+                                            intermediate_candle["open"],
+                                            intermediate_candle["close"],
+                                        )
+                                        < current_candle["open"]
+                                        and j < entry_index - 1
+                                        and (
+                                            current_candle["close"]
+                                            - current_candle["close"] / 100 * 0.02
+                                        )
+                                        < intermediate_candle["close"]
+                                    ):
+                                        continue
+
+                                    elif j == entry_index - 1:
+                                        return True
+
+                                    else:
+                                        return False
+                                break
 
             elif entry_candle["candle"] == "R":
                 #         print('Testing R candle')
@@ -306,47 +309,52 @@ class LiveTrade:
 
                     if current_candle["candle"] == "G":
                         # Calculate the overlap range between the two candles
-                        overlap_percentage = (
-                            (
+
+                        overlap_size = (
                                 min(current_candle["open"], entry_candle["close"])
                                 - max(current_candle["close"], entry_candle["open"])
                             )
-                            / current_candle_size
-                        ) * 100
+                        
+                        if overlap_size > 0:
 
-                        #                     30 % overlap is decided between entry and big opposite candle
-                        if (
-                            current_candle["open"] >= entry_candle["close"]
-                            and current_candle_size >= 0.5 * entry_candle_size
-                            and current_candle_size <= 1.2 * entry_candle_size
-                            and overlap_percentage >= 30
-                        ):
-                            #                 print('R in IF')
-                            for j in range(i + 1, entry_index):
-                                intermediate_candle = self.df.iloc[j]
+                            overlap_percentage = (
+                                overlap_size
+                                / current_candle_size
+                            ) * 100
 
-                                if (
-                                    min(
-                                        intermediate_candle["open"],
-                                        intermediate_candle["close"],
-                                    )
-                                    > current_candle["open"]
-                                    and j < entry_index - 1
-                                    and (
-                                        current_candle["close"]
-                                        + current_candle["close"] / 100 * 0.02
-                                    )
-                                    > intermediate_candle["close"]
-                                ):
-                                    continue
+                            #                     30 % overlap is decided between entry and big opposite candle
+                            if (
+                                current_candle["open"] >= entry_candle["close"]
+                                and current_candle_size >= 0.5 * entry_candle_size
+                                and current_candle_size <= 1.2 * entry_candle_size
+                                and overlap_percentage >= 30
+                            ):
+                                #                 print('R in IF')
+                                for j in range(i + 1, entry_index):
+                                    intermediate_candle = self.df.iloc[j]
 
-                                elif j == entry_index - 1:
-                                    return True
+                                    if (
+                                        min(
+                                            intermediate_candle["open"],
+                                            intermediate_candle["close"],
+                                        )
+                                        > current_candle["open"]
+                                        and j < entry_index - 1
+                                        and (
+                                            current_candle["close"]
+                                            + current_candle["close"] / 100 * 0.02
+                                        )
+                                        > intermediate_candle["close"]
+                                    ):
+                                        continue
 
-                                else:
-                                    return False
+                                    elif j == entry_index - 1:
+                                        return True
 
-                            break
+                                    else:
+                                        return False
+
+                                break
 
         return False
 
@@ -571,7 +579,7 @@ class LiveTrade:
     def pip_calc(self, close, sl):
         #         Calculate pips between Entry & SL
 
-        if str(close).index(".") >= 3:  # JPY pair
+        if str(close).index(".") >= 2:  # JPY pair
             multiplier = 0.01
 
         else:
@@ -583,13 +591,15 @@ class LiveTrade:
     def result_pip_calc(self, close, value):
         #         Calculate pip value from currency price
 
-        if str(close).index(".") >= 3:  # JPY pair
+        if str(close).index(".") >= 2:  # JPY pair
             multiplier = 100
 
         else:
             multiplier = 10000
 
         pip = value * multiplier
+
+        print('PIP: ', pip)
 
         return float(pip)
 
@@ -832,7 +842,7 @@ class LiveTrade:
         self.sl = self.result.loc[self.result_len, "S/L"]
         self.trail_sl = False
 
-        self.base_candle_index = self.df.iloc[-1]['date']
+        self.base_candle_index = self.df.iloc[-1]["date"]
 
         self.doji_count = 0
 
@@ -862,12 +872,11 @@ class LiveTrade:
 
         current_candle = self.df.loc[length]["candle"]
 
-        base_index =  self.df[self.df['date'] == self.base_candle_index].index
+        base_index = self.df[self.df["date"] == self.base_candle_index].index[0]
 
-        if (
-            (length > (base_index + 12))
-            and ( self.trail_sl == False)
-        ):
+        # print('Base Index: ',base_index)
+
+        if (length > (base_index + 12)) and (self.trail_sl == False):
             self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["close"]
             self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length]["date"]
             self.result.loc[self.result_len, "REASON"] = "NO MOVE"
@@ -895,8 +904,7 @@ class LiveTrade:
             # For Breakeven
             elif self.df.loc[length]["high"] >= self.breakeven:
                 self.sl = min(
-                    self.df.loc[base_index]["close"],
-                    self.df.loc[length]["EMA_8"],
+                    self.df.loc[base_index]["close"], self.df.loc[length]["EMA_8"]
                 )
                 self.trail_sl = True
 
@@ -987,7 +995,6 @@ class LiveTrade:
                     self.result.loc[self.result_len, "REASON"] = "SL"
                 self.buy_on = False
 
-
         if self.buy_on == False:
             self.result.loc[self.result_len, "P/L"] = (
                 self.result.loc[self.result_len]["EXIT"]
@@ -1010,13 +1017,11 @@ class LiveTrade:
 
         current_candle = self.df.loc[length]["candle"]
 
-        base_index =  self.df[self.df['date'] == self.base_candle_index].index
-        
+        base_index = self.df[self.df["date"] == self.base_candle_index].index[0]
 
-        if (
-            (length > (base_index + 12))
-            and ( self.trail_sl == False)
-        ):
+        # print('Base Index: ',base_index)
+
+        if (length > (base_index + 12)) and (self.trail_sl == False):
             self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["close"]
             self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length]["date"]
             self.result.loc[self.result_len, "REASON"] = "NO MOVE"
@@ -1039,10 +1044,7 @@ class LiveTrade:
 
             # For Breakeven
             elif self.df.loc[length]["low"] <= self.breakeven:
-                self.sl = max(
-                    self.df.loc[base_index]["high"],
-                    self.df.loc[length]["EMA_8"],
-                )
+                self.sl = max(self.df.loc[base_index]["high"],self.df.loc[length]["EMA_8"])
                 self.trail_sl = True
 
             # For trailing after Big Red Candle in breakeven
@@ -1057,7 +1059,6 @@ class LiveTrade:
                 >= 0.04
             ):
                 self.sl = max(self.df.loc[length]["high"], self.df.loc[length]["EMA_8"])
-
 
             #               For Gap Up exit
             elif self.sl <= self.df.loc[length]["open"]:
