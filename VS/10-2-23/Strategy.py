@@ -12,15 +12,14 @@ class LiveTrade:
     def __init__(self, instrument):
         #         self.df = pd.DataFrame(yf.download(tickers=instrument, start = '2022-10-01', end = '2023-06-01', interval='1h'))
         if not mt5.initialize(
-            login=40987, server="CabanaCapitals-Demo", password="Mypassword$1234"
+            login=114999529, server="Exness-MT5Trial6", password="Mypassword$1234"
         ):
             print("initialize() failed, error code =", mt5.last_error())
             quit()
 
-        login = 40987
+        login = 114999529
         password = "Mypassword$1234"
-        server = "CabanaCapitals-Demo"
-
+        server = "Exness-MT5Trial6"
         mt5.login(login, password, server)
 
         rate = mt5.copy_rates_from(
@@ -903,9 +902,7 @@ class LiveTrade:
 
             # For Breakeven
             elif self.df.loc[length]["high"] >= self.breakeven:
-                self.sl = min(
-                    self.df.loc[base_index]["close"], self.df.loc[length]["EMA_8"]
-                )
+                self.sl =  self.df.loc[length]["EMA_8"]
                 self.trail_sl = True
 
             # For trailing after Big Green Candle in breakeven
@@ -919,7 +916,7 @@ class LiveTrade:
                 * 100
                 >= 0.04
             ):
-                self.sl = min(self.df.loc[length]["low"], self.df.loc[length]["EMA_8"])
+                self.sl =  self.df.loc[length]["EMA_8"]
 
             # For Gap Down exit
             elif self.sl >= self.df.loc[length]["open"]:
@@ -1044,7 +1041,7 @@ class LiveTrade:
 
             # For Breakeven
             elif self.df.loc[length]["low"] <= self.breakeven:
-                self.sl = max(self.df.loc[base_index]["high"],self.df.loc[length]["EMA_8"])
+                self.sl = self.df.loc[length]["EMA_8"]
                 self.trail_sl = True
 
             # For trailing after Big Red Candle in breakeven
@@ -1058,7 +1055,7 @@ class LiveTrade:
                 * 100
                 >= 0.04
             ):
-                self.sl = max(self.df.loc[length]["high"], self.df.loc[length]["EMA_8"])
+                self.sl = self.df.loc[length]["EMA_8"]
 
             #               For Gap Up exit
             elif self.sl <= self.df.loc[length]["open"]:
