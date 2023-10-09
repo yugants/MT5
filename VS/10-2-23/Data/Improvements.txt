@@ -1,0 +1,17 @@
+Take exit even if high/low of a candle hits ema 8 Done
+
+======================================================
+
+RED CANDLE HIGH HIT TRG WRITE CONDITION FOR IT Done
+
+GREEN CANDLE LOW HIT TRG WRITE CONDITION Done
+
+======================================================
+
+RED CANDLE CLSOED BELOW GREEN IN ENTRY CONDITION IN THE MIDDLE [CHECK ALSO FOR GREEN CANDLE CONDITION]
+
+======================================================
+
+NO MOVE NOT WORKING FOR BUY CONDITION Don't know why?
+
+

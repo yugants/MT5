@@ -1,0 +1,13 @@
+AUDCHF:
+NOT DETECTED
+4 OCT 11:15
+4 OCT: 8:30
+3-OCT: 14:30
+3-OCT: 1:00
+
+All markers are in audchf, don't remove drawing from it
+
+IMPROVE ENTRY
+
+
+Make separate conditions for Buy and Sell
