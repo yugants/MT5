@@ -68,7 +68,12 @@ class LiveTrade:
         self.green_count = 0
         self.red_count = 0
 
-        # self.df["tradable"] = 0
+                # For Big Candle Pause
+
+        self.big_candle = False
+        self.big_candle_count = 0
+
+        self.df["tradable"] = 0
         #         self.df.at[length, 'tradable'] = 0
 
         self.result = pd.DataFrame(
@@ -281,6 +286,45 @@ class LiveTrade:
 
         else:
             return 0
+        
+
+    def check_size(self, row):
+
+        # Pause after Big candle
+        large_per = (abs(row['close'] - row['open'])/ row['open']) * 100
+        
+        if row['candle'] == 'G':
+            up_wick = (abs(row['close'] - row['high'])/ row['open']) * 100
+            low_wick = (abs(row['open'] - row['low'])/ row['open']) * 100
+
+        else:
+            up_wick = (abs(row['open'] - row['high'])/ row['open']) * 100
+            low_wick = (abs(row['close'] - row['low'])/ row['open']) * 100
+
+      
+        if large_per > 0.19 or up_wick > 0.19 or low_wick > 0.19 :
+
+            self.big_candle = True
+            self.big_candle_count = 0
+            self.df.loc[self.df['date'] == row['date'], "tradable"] = "Big"
+
+        elif self.big_candle == True and self.big_candle_count < 10:
+
+            self.big_candle_count += 1
+            self.df.loc[self.df['date'] == row['date'], "tradable"] = "Big Range"
+
+
+        elif self.big_candle_count == 9:
+
+            self.big_candle = False
+            self.big_candle_count = 0
+            self.df.loc[self.df['date'] == row['date'], "tradable"] = 0
+
+
+        else:
+
+            self.df.loc[self.df['date'] == row['date'], "tradable"] = 0
+
 
     def check_conditions(self):
         # length = len(self.df) - 1
@@ -297,11 +341,13 @@ class LiveTrade:
 
         self.df["candle_size"] = self.df.apply(self.check_body, axis=1)
 
+        self.df.apply(self.check_size, axis=1)
+
         self.df["prev_candle"] = self.df.apply(self.check_prev_candle, axis=1)
 
         # self.df[ "prev_candle"] = self.df.apply(self.check_last, axis=1)
 
-        self.df.to_excel("test.xlsx")
+        self.df.to_excel("size.xlsx")
 
 
 audchf = LiveTrade(["AUDCHF", 10.92729, 6000])
