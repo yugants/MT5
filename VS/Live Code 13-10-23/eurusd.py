@@ -1,4 +1,4 @@
-from Strategy_20 import LiveTrade
+from Strategy_50 import LiveTrade
 import warnings
 
 # Ignore all warnings

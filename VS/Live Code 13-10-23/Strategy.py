@@ -122,8 +122,8 @@ class LiveTrade:
         self.df.loc[length, "EMA_15"] = talib.EMA(self.df["close"], timeperiod=15).iloc[
             -1
         ]
-        self.df.loc[length, "EMA_50"] = talib.EMA(
-            self.df["close"], timeperiod=50
+        self.df.loc[length, "EMA_200"] = talib.EMA(
+            self.df["close"], timeperiod=200
         ).iloc[-1]
         self.df.loc[length, "RSI"] = talib.RSI(self.df["close"], timeperiod=21).iloc[-1]
 
@@ -338,7 +338,7 @@ class LiveTrade:
             df["candle"] == "G"
             and df["RSI"] < 70
             and df["close"] > df["EMA_20"]
-            and df["EMA_20"] > df["EMA_50"]
+            and df["EMA_20"] > df["EMA_200"]
         ):
             return 1
 
@@ -346,7 +346,7 @@ class LiveTrade:
             df["candle"] == "R"
             and df["RSI"] > 30
             and df["close"] < df["EMA_20"]
-            and df["EMA_20"] < df["EMA_50"]
+            and df["EMA_20"] < df["EMA_200"]
         ):
             return 1
 

@@ -981,6 +981,15 @@ class LiveTrade:
 
                 self.buy_on = False
 
+
+            elif self.df.loc[length]["close"] < self.df.loc[length]["EMA_20"]:
+                self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["open"]
+                self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
+                    "date"
+                ]
+                self.trail_sl = False
+                self.sell_on = False
+
             # For Breakeven
             elif (
                 self.df.loc[length]["high"] >= self.breakeven and self.trail_sl == False
@@ -1129,6 +1138,16 @@ class LiveTrade:
                     self.result.loc[self.result_len, "REASON"] = "SL"
 
                 self.sell_on = False
+
+
+            elif self.df.loc[length]["close"] > self.df.loc[length]["EMA_20"]:
+                self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["open"]
+                self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
+                    "date"
+                ]
+                self.trail_sl = False
+                self.sell_on = False
+
 
             # Green candle low touches trg
             elif self.target >= self.df.loc[length]["low"]:
