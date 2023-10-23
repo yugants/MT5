@@ -880,7 +880,8 @@ class LiveTrade:
 
         # print('Base Index: ',base_index)
 
-        if (length > (base_index + 12)) and self.trail_sl == False:
+        if ((length > (base_index + 12)) and self.trail_sl == False and
+            self.df.loc[length]["high"] < self.breakeven):
             # print('Hi')
             # print(self.df.iloc[base_index])
             self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["close"]
@@ -984,7 +985,8 @@ class LiveTrade:
                 self.buy_on = False
 
             # Closing below 20 EMA
-            elif self.df.loc[length]["close"] < self.df.loc[length]["EMA_20"]:
+            elif (self.df.loc[length]["close"] < self.df.loc[length]["EMA_20"] and
+                length > (base_index + 5)):
                 self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["close"]
                 self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
                     "date"
@@ -1054,7 +1056,9 @@ class LiveTrade:
 
         # print('Base Index: ',base_index)
 
-        if (length > (base_index + 12)) and (self.trail_sl == False):
+        if ((length > (base_index + 12)) and (self.trail_sl == False) and
+            self.df.loc[length]["low"] > self.breakeven):
+
             self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["close"]
             self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length]["date"]
             self.result.loc[self.result_len, "REASON"] = "NO MOVE"
@@ -1144,7 +1148,8 @@ class LiveTrade:
                 self.sell_on = False
 
 
-            elif self.df.loc[length]["close"] > self.df.loc[length]["EMA_20"]:
+            elif (self.df.loc[length]["close"] > self.df.loc[length]["EMA_20"] and
+                length > (base_index + 5)):
                 self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["close"]
                 self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
                     "date"
