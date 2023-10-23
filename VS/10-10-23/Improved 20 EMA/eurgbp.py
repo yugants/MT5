@@ -4,7 +4,7 @@ import warnings
 # Ignore all warnings
 warnings.filterwarnings("ignore")
 
-eurjpy = LiveTrade(['EURJPY', 6.69582, 24000])
+eurgbp = LiveTrade(['EURGBP', 12.2016, 24000])
 
-eurjpy.Caller('EURJPY')
+eurgbp.Caller('EURGBP')
 

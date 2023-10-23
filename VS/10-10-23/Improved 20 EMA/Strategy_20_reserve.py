@@ -880,11 +880,12 @@ class LiveTrade:
 
         # print('Base Index: ',base_index)
 
-        if (length > (base_index + 12)) and (self.trail_sl == False):
-            self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["close"]
-            self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length]["date"]
-            self.result.loc[self.result_len, "REASON"] = "NO MOVE"
-            self.sell_on = False
+        # if (length > (base_index + 12)) and self.trail_sl == False:
+        #     # print('Hiiiiiiiiiiiii')
+        #     self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["close"]
+        #     self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length]["date"]
+        #     self.result.loc[self.result_len, "REASON"] = "NO MOVE"
+        #     self.sell_on = False
 
         #         print(current_candle)
 
@@ -981,12 +982,13 @@ class LiveTrade:
 
                 self.buy_on = False
 
-
+            # Closing below 20 EMA
             elif self.df.loc[length]["close"] < self.df.loc[length]["EMA_20"]:
-                self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["open"]
+                self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["close"]
                 self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
                     "date"
                 ]
+                self.result.loc[self.result_len, "REASON"] = "EMA_20"
                 self.trail_sl = False
                 self.sell_on = False
 
@@ -1006,6 +1008,7 @@ class LiveTrade:
                 ]
                 self.result.loc[self.result_len, "REASON"] = "TRG"
                 self.buy_on = False
+                self.trail_sl = False
 
             # For SL
             elif self.sl >= self.df.loc[length]["low"]:
@@ -1050,11 +1053,11 @@ class LiveTrade:
 
         # print('Base Index: ',base_index)
 
-        if (length > (base_index + 12)) and (self.trail_sl == False):
-            self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["close"]
-            self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length]["date"]
-            self.result.loc[self.result_len, "REASON"] = "NO MOVE"
-            self.sell_on = False
+        # if (length > (base_index + 12)) and (self.trail_sl == False):
+        #     self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["close"]
+        #     self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length]["date"]
+        #     self.result.loc[self.result_len, "REASON"] = "NO MOVE"
+        #     self.sell_on = False
 
         if current_candle == "R":
             # TRG  and Trail SL condition
@@ -1145,6 +1148,7 @@ class LiveTrade:
                 self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
                     "date"
                 ]
+                self.result.loc[self.result_len, "REASON"] = "EMA_20"
                 self.trail_sl = False
                 self.sell_on = False
 
