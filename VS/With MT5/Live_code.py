@@ -2,7 +2,7 @@ import talib
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
-import datetime
+import random, time
 import MetaTrader5 as mt5
 import pandas_ta as ta
 from scipy.signal import savgol_filter, find_peaks
@@ -23,10 +23,9 @@ class LiveTrade:
             server = "Exness-MT5Trial6"
             mt5.login(login, password, server)
 
-            rate = mt5.copy_rates_from(
-                instrument[0], mt5.TIMEFRAME_M15, datetime.datetime.now(), instrument[2]
-            )
-            self.df = pd.DataFrame(rate)
+            self.df = pd.DataFrame(mt5.copy_rates_from(
+                instrument[0], mt5.TIMEFRAME_M15, datetime.now(), instrument[2]
+            ))
 
             self.df["date"] = pd.to_datetime(self.df["time"], unit="s")
 
@@ -53,6 +52,14 @@ class LiveTrade:
 
             self.doji_counter = 0
             self.doji_flag = False
+
+            # Pair name
+
+            self.pair = instrument[0]
+
+            # Account object
+
+            self.account_info = mt5.account_info()
 
             #     For counting 20 candles after climax
 
@@ -653,12 +660,11 @@ class LiveTrade:
             10,
         ]
 
-        #       Risk per trade 2%  of 10K $ account
-        rpt = 200
+        #       Risk per trade 2%  of account
+        self.account = self.account_info.equity
 
-        #         print('Pips in calc_quantity: ', pips)
+        rpt = int(self.account * 0.02)
 
-        #         sl = 76
 
         quantity = []
 
@@ -823,6 +829,56 @@ class LiveTrade:
 
         self.result.loc[self.result_len, "SET_BRK"] = self.breakeven
 
+    def place_trade(self):
+
+        # Place trade in MT5
+
+        try:
+        
+            self.magic = random.randint(10000, 999999)
+
+            if self.result.loc[self.result_len, "TRADE"] == 'B':
+
+                # Buy
+                request = {
+                    "action": mt5.TRADE_ACTION_DEAL,
+                    "symbol": self.pair,
+                    "volume": self.result.loc[self.result_len, "QUANTITY"], 
+                    "type": mt5.ORDER_TYPE_BUY,
+                    "price": mt5.symbol_info_tick(self.pair).ask,
+                    "sl": self.result.loc[self.result_len, "S/L"], 
+                    "tp": self.result.loc[self.result_len, "SET_TRG"], 
+                    "deviation": 20, 
+                    "magic": self.magic, 
+                    "comment": "python script buy",
+                    "type_time": mt5.ORDER_TIME_GTC,
+                    "type_filling": mt5.ORDER_FILLING_FOK,  # Change the filling mode here
+                }
+
+            elif self.result.loc[self.result_len, "TRADE"] == 'S':
+                
+                # Sell
+                request = {
+                    "action": mt5.TRADE_ACTION_DEAL,
+                    "symbol": self.pair,
+                    "volume": self.result.loc[self.result_len, "QUANTITY"], 
+                    "type": mt5.ORDER_TYPE_SELL,
+                    "price": mt5.symbol_info_tick(self.pair).ask,
+                    "sl": self.result.loc[self.result_len, "S/L"], 
+                    "tp": self.result.loc[self.result_len, "SET_TRG"], 
+                    "deviation": 20, 
+                    "magic": self.magic, 
+                    "comment": "python script sell",
+                    "type_time": mt5.ORDER_TIME_GTC,
+                    "type_filling": mt5.ORDER_FILLING_FOK,  # Change the filling mode here
+                }
+
+            self.order = mt5.order_send(request)
+
+        except Exception as e:
+            print(f"An error in sending order: {e}")
+
+
     def calculations(self):
         self.sl = self.result.loc[self.result_len, "S/L"]
         self.trail_sl = False
@@ -844,16 +900,36 @@ class LiveTrade:
         self.calc_target()
 
         # Call MT5 with order for Buying in quantity as lot size, and SL TRG
-        # Pass everything from result, we have everything there, just target will be different
 
-        # Call MT5 with order for Selling in quantity as lot size, and SL TRG
+        self.place_trade()
+
+
+    def update_order(self):
+
+        request = {
+        'action' : mt5.TRADE_ACTION_SLTP,  # Type of trade operation
+        'position' : self.order.order, # Ticket of the position
+        'symbol' : self.pair,  # Symbol
+        'sl' : self.sl,  # Stop Loss of the position
+        'tp' : self.result.loc[self.result_len, "SET_TRG"],  # Take Profit of the position
+        'magic' : self.magic  # MagicNumber of the position
+        }
+
+        # Send the request
+        try:
+            result = mt5.order_send(request)
+            if result.retcode != mt5.TRADE_RETCODE_DONE:
+                print("OrderSend error %d" % result.retcode)
+
+
+        except Exception as e:
+            print(f"MetaTrader5Error: {e}")
 
     def manage_buy(self):
-        # print('In Buy')
+        
+        # Manage Buy Trade
 
         length = len(self.df) - 1
-
-        #             current_candle = self.df.loc[length,'candle']
 
         current_candle = self.df.loc[length]["candle"]
 
@@ -867,12 +943,13 @@ class LiveTrade:
             self.result.loc[self.result_len, "REASON"] = "NO MOVE"
             self.buy_on = False
 
-        #         print(current_candle)
+            # Closing the order
+            mt5.Close(self.pair,ticket=self.order.order)
+            
+
 
         if current_candle == "G" and self.buy_on == True:
             # TRG and Trail SL condition
-
-            # print('In a green candle')
 
             if self.df.loc[length]["high"] >= self.target:
                 # TRG
@@ -891,6 +968,9 @@ class LiveTrade:
                 self.sl = self.df.loc[length]["EMA_8"]
                 self.trail_sl = True
 
+                # Calling to update the order
+                self.update_order()
+
             # For trailing after Big Green Candle in breakeven
 
             elif (
@@ -903,6 +983,9 @@ class LiveTrade:
                 >= 0.04
             ):
                 self.sl = self.df.loc[length]["EMA_8"]
+
+                # Calling to update the order
+                self.update_order()
 
             # For Gap Down exit
             elif self.sl >= self.df.loc[length]["open"]:
@@ -918,6 +1001,7 @@ class LiveTrade:
 
                 else:
                     self.result.loc[self.result_len, "REASON"] = "SL"
+                
                 self.buy_on = False
 
             # Green candle low hits SL
@@ -965,6 +1049,10 @@ class LiveTrade:
                     "date"
                 ]
                 self.result.loc[self.result_len, "REASON"] = "EMA_20"
+                
+                # Closing the order
+                mt5.Close(self.pair,ticket=self.order.order)
+
                 self.trail_sl = False
                 self.sell_on = False
 
@@ -974,6 +1062,8 @@ class LiveTrade:
             ):
                 self.sl = self.df.loc[length]["EMA_8"]
                 self.trail_sl = True
+
+                self.update_order()
 
             # High of Red touches TRG
 
@@ -1035,6 +1125,9 @@ class LiveTrade:
             self.result.loc[self.result_len, "REASON"] = "NO MOVE"
             self.sell_on = False
 
+            # Closing the order
+            mt5.Close(self.pair,ticket=self.order.order)
+
         if current_candle == "R":
             # TRG  and Trail SL condition
 
@@ -1054,6 +1147,9 @@ class LiveTrade:
                 self.sl = self.df.loc[length]["EMA_8"]
                 self.trail_sl = True
 
+                # Update the order
+                self.update_order()
+
             # For trailing after Big Red Candle in breakeven
 
             elif (
@@ -1066,6 +1162,9 @@ class LiveTrade:
                 >= 0.04
             ):
                 self.sl = self.df.loc[length]["EMA_8"]
+
+                # Update the order
+                self.update_order()
 
             #               For Gap Up exit
             elif self.sl <= self.df.loc[length]["open"]:
@@ -1129,6 +1228,9 @@ class LiveTrade:
                 self.trail_sl = False
                 self.sell_on = False
 
+                # Closing the order
+                mt5.Close(self.pair,ticket=self.order.order)
+
 
             # Green candle low touches trg
             elif self.target >= self.df.loc[length]["low"]:
@@ -1170,37 +1272,61 @@ class LiveTrade:
                 )
             )
 
-    def Caller(self, instrument):
+    def Caller(self):
         # Initialize an empty DataFrame to store the past data that gets dropped
-        self.past_df = pd.DataFrame()
-
-        #         Loop for taking the live data
-        for index, row in self.df2.iterrows():
-            # Add live data to the df DataFrame
-            self.df = self.df.append(row, ignore_index=True)
+        try:
             
+            while True:
 
-            # Delete the first row if the DataFrame has more than 202 rows
-            if len(self.df) > 500:
-                # Save the dropped row in past_df
-                self.past_df = self.past_df.append(self.df.iloc[0], ignore_index=True)
+                # Current candle time
+                time = self.df.iloc[-1]['date']
+
+                if self.sell_on == False and self.buy_on == False:
+                    # Add 15 minutes to the time
+                    new_time = (time + timedelta(minutes=15))
+
+                else:
+                    # Subtract 20 seconds from the time
+                    new_time = (time + timedelta(minutes=15) - timedelta(seconds=20))
+
+                # Calculate the time difference in seconds
+                current_datetime = datetime.utcnow()
+                target_datetime = datetime(new_time.year, new_time.month, new_time.day, new_time.hour, new_time.minute, new_time.second)
+                time_difference = (target_datetime - current_datetime).total_seconds()
+
+                if time_difference > 10:
+                    # Calculate the wake-up time
+                    wake_up_time = current_datetime + timedelta(seconds=time_difference)
+                    print(f"Will wake up at: {wake_up_time}")
+
+                    time.sleep(time_difference)
+                # ==================================================================
+                
+                new_candle = pd.DataFrame( mt5.copy_rates_from('EURUSD', mt5.TIMEFRAME_M15, datetime.now(), 1))
+
+                new_candle['date'] = pd.to_datetime(new_candle['time'], unit='s')
+
+                new_candle = new_candle.drop(["spread", "real_volume", "tick_volume", "time"], axis="columns")
+
+                print('Candle: ', new_candle)
+                    # Save the dropped row in past_df
+                self.df = self.df.append(new_candle, ignore_index=True)
+
                 # self.past_df = pd.concat([self.past_df, self.df.iloc[0]], ignore_index=True)
                 self.df = self.df.iloc[1:].reset_index(drop=True)
 
-            # Calculate indicators for the current state of df
-            self.calculate_indicators()
+                # Calculate indicators for the current state of df
+                self.calculate_indicators()
 
-            if self.buy_on == True:
-                self.manage_buy()
+                if self.buy_on == True:
+                    self.manage_buy()
 
-            elif self.sell_on == True:
-                self.manage_sell()
+                elif self.sell_on == True:
+                    self.manage_sell()
 
-            else:
+                else:
                 # Apply all entry conditions
-                self.check_conditions()
+                    self.check_conditions()
 
-        # Concatenate past_df and df to get the full dataset
-        self.result_df = pd.concat([self.past_df, self.df], ignore_index=True)
-
-        self.result.to_excel(f"{instrument}.xlsx")
+        except Exception as e:
+            print(f"An error occurred in Caller: {e}")
