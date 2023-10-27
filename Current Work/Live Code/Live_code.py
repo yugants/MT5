@@ -2,7 +2,8 @@ import talib
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
-import random, time
+import random
+from time import sleep
 import MetaTrader5 as mt5
 import pandas_ta as ta
 from scipy.signal import savgol_filter, find_peaks
@@ -960,6 +961,7 @@ class LiveTrade:
                 ]
                 self.result.loc[self.result_len, "REASON"] = "TRG"
                 self.buy_on = False
+                self.trail_sl = False
 
             # For Breakeven
             elif (
@@ -1034,7 +1036,7 @@ class LiveTrade:
                 if self.trail_sl:
                     self.result.loc[self.result_len, "REASON"] = "TRAIL_SL"
                     self.trail_sl = False
-                    self.buy_on = False
+                    
 
                 else:
                     self.result.loc[self.result_len, "REASON"] = "SL"
@@ -1299,10 +1301,10 @@ class LiveTrade:
                     wake_up_time = current_datetime + timedelta(seconds=time_difference)
                     print(f"Will wake up at: {wake_up_time}")
 
-                    time.sleep(time_difference)
+                    sleep(time_difference)
                 # ==================================================================
                 
-                new_candle = pd.DataFrame( mt5.copy_rates_from('EURUSD', mt5.TIMEFRAME_M15, datetime.now(), 1))
+                new_candle = pd.DataFrame( mt5.copy_rates_from(self.pair, mt5.TIMEFRAME_M15, datetime.now(), 1))
 
                 new_candle['date'] = pd.to_datetime(new_candle['time'], unit='s')
 
