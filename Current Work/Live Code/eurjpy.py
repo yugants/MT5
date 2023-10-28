@@ -1,4 +1,4 @@
-from Strategy_Backtesting import LiveTrade
+from backtesting_dymaic_acc import LiveTrade
 import warnings
 
 # Ignore all warnings
