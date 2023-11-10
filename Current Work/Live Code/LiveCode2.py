@@ -2,7 +2,8 @@ import talib
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
-import datetime
+import random
+from time import sleep
 import MetaTrader5 as mt5
 import pandas_ta as ta
 from scipy.signal import savgol_filter, find_peaks
@@ -10,87 +11,96 @@ from scipy.signal import savgol_filter, find_peaks
 
 class LiveTrade:
     def __init__(self, instrument):
-        #         self.df = pd.DataFrame(yf.download(tickers=instrument, start = '2022-10-01', end = '2023-06-01', interval='1h'))
-        if not mt5.initialize(
-            login=114999529, server="Exness-MT5Trial6", password="Mypassword$1234"
-        ):
-            print("initialize() failed, error code =", mt5.last_error())
-            quit()
+        
+        try:
+            if not mt5.initialize(
+                    login=114999529, server="Exness-MT5Trial6", password="Mypassword$1234"
+                ):
+                    print("initialize() failed, error code =", mt5.last_error())
+                    quit()
 
-        login = 114999529
-        password = "Mypassword$1234"
-        server = "Exness-MT5Trial6"
-        mt5.login(login, password, server)
+            login = 114999529
+            password = "Mypassword$1234"
+            server = "Exness-MT5Trial6"
+            mt5.login(login, password, server)
 
-        rate = mt5.copy_rates_from(
-            instrument[0], mt5.TIMEFRAME_M15, datetime.datetime.now(), instrument[2]
-        )
-        nf = pd.DataFrame(rate)
+            self.df = pd.DataFrame(mt5.copy_rates_from(
+                instrument[0], mt5.TIMEFRAME_M15, datetime.now(), instrument[2]
+            ))
 
-        nf["date"] = pd.to_datetime(nf["time"], unit="s")
+            self.df["date"] = pd.to_datetime(self.df["time"], unit="s")
 
-        nf.set_index(np.arange(len(nf)), inplace=True)
-        nf = nf.drop(["spread", "real_volume", "tick_volume", "time"], axis="columns")
+            self.df.set_index(np.arange(len(self.df)), inplace=True)
+            self.df = self.df.drop(["spread", "real_volume", "tick_volume", "time"], axis="columns")
 
-        self.df = nf.iloc[:500]  # First half
-        self.df2 = nf.iloc[500:]  # Second half
+            # Longer EMA
+            self.ema_value = instrument[3]
 
-        self.account = 10000
+            self.prev_high, self.prev_low, self.current_high, self.current_low = (
+                float(),
+                float(),
+                float(),
+                float(),
+            )
 
-        self.prev_high, self.prev_low, self.current_high, self.current_low = (
-            float(),
-            float(),
-            float(),
-            float(),
-        )
+            #         For EURUSD
+            self.one_pip_value = instrument[1]
 
-        #         For EURUSD
-        self.one_pip_value = instrument[1]
+            # For Big Candle Pause
 
-        # For Big Candle Pause
+            self.big_candle = False
+            self.big_candle_count = 0
 
-        self.big_candle = False
-        self.big_candle_count = 0
+            #     For Doji Condition
 
-        #     For Doji Condition
+            self.doji_counter = 0
+            self.doji_flag = False
 
-        self.doji_counter = 0
-        self.doji_flag = False
+            # Pair name
 
-        # Longer EMA
-        self.ema_value = instrument[3]
+            self.pair = instrument[0]
 
-        #     For counting 20 candles after climax
+            # Account object
 
-        self.buy_flag = True
-        self.sell_flag = True
-        self.green_count = 0
-        self.red_count = 0
+            self.account_info = mt5.account_info()
 
-        self.df["tradable"] = 0
-        #         self.df.at[length, 'tradable'] = 0
+            #     For counting 20 candles after climax
 
-        self.result = pd.DataFrame(
-            columns=[
-                "ENTRY DATE",
-                "ENTRY",
-                "QUANTITY",
-                "TRADE",
-                "EXIT",
-                "EXIT DATE",
-                "P/L",
-                "REAL P/L",
-                "S/L",
-                "SET_TRG",
-                "SET_BRK",
-                "Acc",
-            ]
-        )
+            self.buy_flag = True
+            self.sell_flag = True
+            self.green_count = 0
+            self.red_count = 0
 
-        self.trade_on = None
+            self.df["tradable"] = 0
+            #         self.df.at[length, 'tradable'] = 0
 
-        self.buy_on = False
-        self.sell_on = False
+            self.result = pd.DataFrame(
+                columns=[
+                    "ENTRY DATE",
+                    "ENTRY",
+                    "QUANTITY",
+                    "TRADE",
+                    "EXIT",
+                    "EXIT DATE",
+                    "P/L",
+                    "REAL P/L",
+                    "S/L",
+                    "SET_TRG",
+                    "SET_BRK",
+                ]
+            )
+
+            self.trade_on = None
+
+            self.buy_on = False
+            self.sell_on = False
+
+        except Exception as e:
+            print(f"Constructor, error occurred: {e}")
+    
+
+
+
 
     def candle(self, df):
         """Return candle colour"""
@@ -127,8 +137,9 @@ class LiveTrade:
             -1
         ]
         self.df.loc[length, "EMA_200"] = talib.EMA(
-            self.df["close"], timeperiod=self.ema_value
+            self.df["close"], timeperiod= self.ema_value
         ).iloc[-1]
+        
         self.df.loc[length, "RSI"] = talib.RSI(self.df["close"], timeperiod=21).iloc[-1]
 
         self.df.loc[length, "candle"] = self.candle(self.df.iloc[-1])
@@ -653,12 +664,11 @@ class LiveTrade:
             10,
         ]
 
-        #       Risk per trade 2%  of 10K $ account
-        rpt = self.account * 0.02
+        #       Risk per trade 2%  of account
+        self.account = self.account_info.equity
 
-        #         print('Pips in calc_quantity: ', pips)
+        rpt = int(self.account * 0.02)
 
-        #         sl = 76
 
         quantity = []
 
@@ -704,12 +714,7 @@ class LiveTrade:
                     and self.breakeven < self.df.close.iloc[self.troughs_idx[i]]
                 ):
                     self.breakeven = self.df.close.iloc[self.troughs_idx[i]]
-                    # print()
-                    # print('TRG calc: ', one_is_two_point_five)
-                    # print('Saw: ', self.df.date.iloc[i])
-                    # print('Trade: ', self.result.loc[self.result_len, 'ENTRY DATE'])
-                    # print('Breakeven: ', self.breakeven)
-                    # print()
+          
 
                 elif (
                     one_is_one
@@ -718,11 +723,7 @@ class LiveTrade:
                     and self.breakeven < self.df.close.iloc[self.troughs_idx[i]]
                 ):
                     self.breakeven = self.df.close.iloc[self.peaks_idx[i]]
-                    # print()
-                    # print('TRG calc: ', one_is_two_point_five)
-                    # print('Saw: ', self.df.date.iloc[i])
-                    # print('Trade: ', self.result.loc[self.result_len, 'ENTRY DATE'])
-                    # print('Breakeven: ', self.breakeven)
+                    
 
                 # For trg 1.5 to 2.5
                 elif (
@@ -733,11 +734,6 @@ class LiveTrade:
                 ):
                     self.target = self.df.close.iloc[self.peaks_idx[i]]
 
-                    # print()
-                    # print('TRG calc: ', one_is_two_point_five)
-                    # print('Saw: ', self.df.date.iloc[i])
-                    # print('Trade: ', self.result.loc[self.result_len, 'ENTRY DATE'])
-                    # print('TRG: ', self.target)
 
                 elif (
                     one_is_point_five
@@ -747,11 +743,6 @@ class LiveTrade:
                 ):
                     self.target = self.df.close.iloc[self.troughs_idx[i]]
 
-                    # print()
-                    # print('TRG calc: ', one_is_two_point_five)
-                    # print('Saw: ', self.df.date.iloc[i])
-                    # print('Trade: ', self.result.loc[self.result_len, 'ENTRY DATE'])
-                    # print('TRG: ', self.target)
 
             if self.target == 0:
                 # If no Pivots then TRG 1:2
@@ -795,9 +786,7 @@ class LiveTrade:
                     and self.breakeven > self.df.close.iloc[self.troughs_idx[i]]
                 ):
                     self.breakeven = self.df.close.iloc[self.troughs_idx[i]]
-                    # print('Saw: ', self.df.date.iloc[i])
-                    # print('Trade: ', self.result.loc[self.result_len, 'ENTRY DATE'])
-                    # print('Breakeven: ', self.breakeven)
+                    
 
                 elif (
                     one_is_point_five
@@ -806,10 +795,6 @@ class LiveTrade:
                     and self.breakeven > self.df.close.iloc[self.troughs_idx[i]]
                 ):
                     self.breakeven = self.df.close.iloc[self.peaks_idx[i]]
-
-                    # print('Saw: ', self.df.date.iloc[i])
-                    # print('Trade: ', self.result.loc[self.result_len, 'ENTRY DATE'])
-                    # print('Breakeven: ', self.breakeven)
 
                 # For trg 1.5 to 2.5
                 elif (
@@ -820,9 +805,6 @@ class LiveTrade:
                 ):
                     self.target = self.df.close.iloc[self.peaks_idx[i]]
 
-                    # print('Saw: ', self.df.date.iloc[i])
-                    # print('Trade: ', self.result.loc[self.result_len, 'ENTRY DATE'])
-                    # print('TRG: ', self.target)
 
                 elif (
                     one_is_two_point_five
@@ -832,9 +814,6 @@ class LiveTrade:
                 ):
                     self.target = self.df.close.iloc[self.troughs_idx[i]]
 
-                    # print('Saw: ', self.df.date.iloc[i])
-                    # print('Trade: ', self.result.loc[self.result_len, 'ENTRY DATE'])
-                    # print('TRG: ', self.target)
 
             if self.target == 0:
                 # If no Pivots then TRG 1:2
@@ -853,6 +832,56 @@ class LiveTrade:
         self.result.loc[self.result_len, "SET_TRG"] = self.target
 
         self.result.loc[self.result_len, "SET_BRK"] = self.breakeven
+
+    def place_trade(self):
+
+        # Place trade in MT5
+
+        try:
+        
+            self.magic = random.randint(10000, 999999)
+
+            if self.result.loc[self.result_len, "TRADE"] == 'B':
+
+                # Buy
+                request = {
+                    "action": mt5.TRADE_ACTION_DEAL,
+                    "symbol": self.pair,
+                    "volume": self.result.loc[self.result_len, "QUANTITY"], 
+                    "type": mt5.ORDER_TYPE_BUY,
+                    "price": mt5.symbol_info_tick(self.pair).ask,
+                    "sl": self.result.loc[self.result_len, "S/L"], 
+                    "tp": self.result.loc[self.result_len, "SET_TRG"], 
+                    "deviation": 20, 
+                    "magic": self.magic, 
+                    "comment": "python script buy",
+                    "type_time": mt5.ORDER_TIME_GTC,
+                    "type_filling": mt5.ORDER_FILLING_FOK,  # Change the filling mode here
+                }
+
+            elif self.result.loc[self.result_len, "TRADE"] == 'S':
+                
+                # Sell
+                request = {
+                    "action": mt5.TRADE_ACTION_DEAL,
+                    "symbol": self.pair,
+                    "volume": float(self.result.loc[self.result_len, "QUANTITY"]), 
+                    "type": mt5.ORDER_TYPE_SELL,
+                    "price": float(mt5.symbol_info_tick(self.pair).ask),
+                    "sl": float(self.result.loc[self.result_len, "S/L"]), 
+                    "tp": float(self.result.loc[self.result_len, "SET_TRG"]), 
+                    "deviation": 20, 
+                    "magic": self.magic, 
+                    "comment": "python script sell",
+                    "type_time": mt5.ORDER_TIME_GTC,
+                    "type_filling": mt5.ORDER_FILLING_FOK,  # Change the filling mode here
+                }
+
+            self.order = mt5.order_send(request)
+
+        except Exception as e:
+            print(f"Execute New Order, error in sending order: {e}")
+
 
     def calculations(self):
         self.sl = self.result.loc[self.result_len, "S/L"]
@@ -875,384 +904,471 @@ class LiveTrade:
         self.calc_target()
 
         # Call MT5 with order for Buying in quantity as lot size, and SL TRG
-        # Pass everything from result, we have everything there, just target will be different
 
-        # Call MT5 with order for Selling in quantity as lot size, and SL TRG
+        self.place_trade()
+
+
+    def update_order(self):
+
+        request = {
+        'action' : mt5.TRADE_ACTION_SLTP,  # Type of trade operation
+        'position' : self.order.order, # Ticket of the position
+        'symbol' : self.pair,  # Symbol
+        'sl' : float(self.sl),  # Stop Loss of the position
+        'tp' : float(self.result.loc[self.result_len, "SET_TRG"]),  # Take Profit of the position
+        'magic' : self.magic  # MagicNumber of the position
+        }
+
+        # Send the request
+        try:
+            result = mt5.order_send(request)
+            if result.retcode != mt5.TRADE_RETCODE_DONE:
+                print("OrderSend error %d" % result.retcode)
+
+
+        except Exception as e:
+            print(f"Update Order error: {e}")
 
     def manage_buy(self):
-        # print('In Buy')
+        
+        # Manage Buy Trade
 
-        length = len(self.df) - 1
+        try:
 
-        #             current_candle = self.df.loc[length,'candle']
+            length = len(self.df) - 1
 
-        current_candle = self.df.loc[length]["candle"]
+            current_candle = self.df.loc[length]["candle"]
 
-        base_index = self.df[self.df["date"] == self.base_candle_index].index[0]
+            base_index = self.df[self.df["date"] == self.base_candle_index].index[0]
 
-        # print('Base Index: ',base_index)
-
-        if ((length > (base_index + 12)) and self.trail_sl == False and
-            self.df.loc[length]["high"] < self.breakeven):
-            # print('Hi')
-            # print(self.df.iloc[base_index])
-            self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["close"]
-            self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length]["date"]
-            self.result.loc[self.result_len, "REASON"] = "NO MOVE"
-            self.buy_on = False
-
-        #         print(current_candle)
-
-        if current_candle == "G" and self.buy_on == True:
-            # TRG and Trail SL condition
-
-            # print('In a green candle')
-
-            if self.df.loc[length]["high"] >= self.target:
-                # TRG
-                # print('In TRG exit condition')
-                #                 print(self.df.loc[length,'date'])
-                self.result.loc[self.result_len, "EXIT"] = self.target
-                self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
-                    "date"
-                ]
-                self.result.loc[self.result_len, "REASON"] = "TRG"
+            if ((length > (base_index + 12)) and self.trail_sl == False and
+                self.df.loc[length]["high"] < self.breakeven):
+                # print(self.df.iloc[base_index])
+                self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["close"]
+                self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length]["date"]
+                self.result.loc[self.result_len, "REASON"] = "NO MOVE"
                 self.buy_on = False
 
-            # For Breakeven
-            elif (
-                self.df.loc[length]["high"] >= self.breakeven and self.trail_sl == False
-            ):
-                self.sl = self.df.loc[length]["EMA_8"]
-                self.trail_sl = True
+                # Closing the order
+                mt5.Close(self.pair,ticket=self.order.order)
+                
 
-            # For trailing after Big Green Candle in breakeven
 
-            elif (
-                self.trail_sl == True
-                and (
-                    (self.df.loc[length]["close"] - self.df.loc[length]["open"])
-                    / self.df.loc[length]["close"]
-                )
-                * 100
-                >= 0.04
-            ):
-                self.sl = self.df.loc[length]["EMA_8"]
+            if current_candle == "G" and self.buy_on == True:
+                # TRG and Trail SL condition
 
-            # For Gap Down exit
-            elif self.sl >= self.df.loc[length]["open"]:
-                # print('In SL Condition')
-                #                 print(self.df.loc[length,'date'])
-                self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["open"]
-                self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
-                    "date"
-                ]
-                if self.trail_sl:
-                    self.trail_sl = False
-                    self.result.loc[self.result_len, "REASON"] = "TRAIL_SL"
-
-                else:
-                    self.result.loc[self.result_len, "REASON"] = "SL"
-                self.buy_on = False
-
-            # Green candle low hits SL
-            elif self.sl >= self.df.loc[length]["low"]:
-                # print('In SL Condition')
-                #                 print(self.df.loc[length,'date'])
-                self.result.loc[self.result_len, "EXIT"] = self.sl
-                self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
-                    "date"
-                ]
-                if self.trail_sl:
-                    self.result.loc[self.result_len, "REASON"] = "TRAIL_SL"
+                if self.df.loc[length]["high"] >= self.target:
+                    # TRG
+                    
+                    self.result.loc[self.result_len, "EXIT"] = self.target
+                    self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
+                        "date"
+                    ]
+                    self.result.loc[self.result_len, "REASON"] = "TRG"
+                    self.buy_on = False
                     self.trail_sl = False
 
-                else:
-                    self.result.loc[self.result_len, "REASON"] = "SL"
+                # For Breakeven
+                elif (
+                    self.df.loc[length]["high"] >= self.breakeven and self.trail_sl == False
+                ):
+                    self.sl = self.df.loc[length]["EMA_8"]
+                    self.trail_sl = True
 
-                self.buy_on = False
+                    # Calling to update the order
+                    self.update_order()
 
-        elif current_candle == "R" and self.buy_on == True:
-            # SL condition
-            # print('In red candle')
+                # For trailing after Big Green Candle in breakeven
 
-            # For Gap down
-            if self.sl >= self.df.loc[length]["open"]:
-                # print('In SL Condition')
-                #                 print(self.df.loc[length,'date'])
+                elif (
+                    self.trail_sl == True
+                    and (
+                        (self.df.loc[length]["close"] - self.df.loc[length]["open"])
+                        / self.df.loc[length]["close"]
+                    )
+                    * 100
+                    >= 0.04
+                ):
+                    self.sl = self.df.loc[length]["EMA_8"]
 
-                self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["open"]
-                self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
-                    "date"
-                ]
+                    # Calling to update the order
+                    self.update_order()
 
-                if self.trail_sl:
-                    self.result.loc[self.result_len, "REASON"] = "TRAIL_SL"
-                    self.trail_sl = False
+                # For Gap Down exit
+                elif self.sl >= self.df.loc[length]["open"]:
+                    # print('In SL Condition')
+                    #                 print(self.df.loc[length,'date'])
+                    self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["open"]
+                    self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
+                        "date"
+                    ]
+                    if self.trail_sl:
+                        self.trail_sl = False
+                        self.result.loc[self.result_len, "REASON"] = "TRAIL_SL"
+
+                    else:
+                        self.result.loc[self.result_len, "REASON"] = "SL"
+                    
                     self.buy_on = False
 
-                else:
-                    self.result.loc[self.result_len, "REASON"] = "SL"
+                # Green candle low hits SL
+                elif self.sl >= self.df.loc[length]["low"]:
+                    self.result.loc[self.result_len, "EXIT"] = self.sl
+                    self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
+                        "date"
+                    ]
+                    if self.trail_sl:
+                        self.result.loc[self.result_len, "REASON"] = "TRAIL_SL"
+                        self.trail_sl = False
 
-                self.buy_on = False
+                    else:
+                        self.result.loc[self.result_len, "REASON"] = "SL"
 
-            # Closing below 20 EMA
-            elif (self.df.loc[length]["close"] < self.df.loc[length]["EMA_20"] and
-                length > (base_index + 5)):
-                self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["close"]
-                self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
-                    "date"
-                ]
-                self.result.loc[self.result_len, "REASON"] = "EMA_20"
-                self.trail_sl = False
-                self.sell_on = False
+                    self.buy_on = False
 
-            # For Breakeven
-            elif (
-                self.df.loc[length]["high"] >= self.breakeven and self.trail_sl == False
-            ):
-                self.sl = self.df.loc[length]["EMA_8"]
-                self.trail_sl = True
+            elif current_candle == "R" and self.buy_on == True:
+                # SL condition
+                # print('In red candle')
 
-            # High of Red touches TRG
+                # For Gap down
+                if self.sl >= self.df.loc[length]["open"]:
 
-            elif self.df.loc[length]["high"] > self.target:
-                self.result.loc[self.result_len, "EXIT"] = self.target
-                self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
-                    "date"
-                ]
-                self.result.loc[self.result_len, "REASON"] = "TRG"
-                self.buy_on = False
-                self.trail_sl = False
+                    self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["open"]
+                    self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
+                        "date"
+                    ]
 
-            # For SL
-            elif self.sl >= self.df.loc[length]["low"]:
-                # print('In SL Condition')
-                #                 print(self.df.loc[length,'date'])
-                self.result.loc[self.result_len, "EXIT"] = self.sl
-                self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
-                    "date"
-                ]
+                    if self.trail_sl:
+                        self.result.loc[self.result_len, "REASON"] = "TRAIL_SL"
+                        self.trail_sl = False
+                        
 
-                if self.trail_sl:
-                    self.result.loc[self.result_len, "REASON"] = "TRAIL_SL"
+                    else:
+                        self.result.loc[self.result_len, "REASON"] = "SL"
+
+                    self.buy_on = False
+
+                # Closing below 20 EMA
+                elif (self.df.loc[length]["close"] < self.df.loc[length]["EMA_20"] and
+                    length > (base_index + 5)):
+                    self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["close"]
+                    self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
+                        "date"
+                    ]
+                    self.result.loc[self.result_len, "REASON"] = "EMA_20"
+                    
+                    # Closing the order
+                    mt5.Close(self.pair,ticket=self.order.order)
+
+                    self.trail_sl = False
+                    self.sell_on = False
+
+                # For Breakeven
+                elif (
+                    self.df.loc[length]["high"] >= self.breakeven and self.trail_sl == False
+                ):
+                    self.sl = self.df.loc[length]["EMA_8"]
+                    self.trail_sl = True
+
+                    self.update_order()
+
+                # High of Red touches TRG
+
+                elif self.df.loc[length]["high"] > self.target:
+                    self.result.loc[self.result_len, "EXIT"] = self.target
+                    self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
+                        "date"
+                    ]
+                    self.result.loc[self.result_len, "REASON"] = "TRG"
+                    self.buy_on = False
                     self.trail_sl = False
 
-                else:
-                    self.result.loc[self.result_len, "REASON"] = "SL"
-                self.buy_on = False
+                # For SL
+                elif self.sl >= self.df.loc[length]["low"]:
+                    self.result.loc[self.result_len, "EXIT"] = self.sl
+                    self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
+                        "date"
+                    ]
 
-        if self.buy_on == False:
-            self.result.loc[self.result_len, "P/L"] = (
-                self.result.loc[self.result_len]["EXIT"]
-                - self.result.loc[self.result_len]["ENTRY"]
-            )
+                    if self.trail_sl:
+                        self.result.loc[self.result_len, "REASON"] = "TRAIL_SL"
+                        self.trail_sl = False
 
-            self.result.loc[self.result_len, "REAL P/L"] = (
-                self.quantity
-                * self.one_pip_value
-                * self.result_pip_calc(
-                    self.result.loc[self.result_len]["ENTRY"],
-                    self.result.loc[self.result_len, "P/L"],
+                    else:
+                        self.result.loc[self.result_len, "REASON"] = "SL"
+                    self.buy_on = False
+
+            if self.buy_on == False:
+                self.result.loc[self.result_len, "P/L"] = (
+                    self.result.loc[self.result_len]["EXIT"]
+                    - self.result.loc[self.result_len]["ENTRY"]
                 )
-            )
 
-            self.account += self.result.loc[self.result_len, "REAL P/L"]
+                self.result.loc[self.result_len, "REAL P/L"] = (
+                    self.quantity
+                    * self.one_pip_value
+                    * self.result_pip_calc(
+                        self.result.loc[self.result_len]["ENTRY"],
+                        self.result.loc[self.result_len, "P/L"],
+                    )
+                )
+        
+        except Exception as e:
+            print(f"Manage Buy Order error: {e}")
 
-            self.result.loc[self.result_len, "Acc"] = self.account
-
+    
     def manage_sell(self):
         # print('In Sell')
 
-        length = len(self.df) - 1
+        try:
 
-        current_candle = self.df.loc[length]["candle"]
+            length = len(self.df) - 1
 
-        base_index = self.df[self.df["date"] == self.base_candle_index].index[0]
+            current_candle = self.df.loc[length]["candle"]
 
-        # print('Base Index: ',base_index)
+            base_index = self.df[self.df["date"] == self.base_candle_index].index[0]
 
-        if ((length > (base_index + 12)) and (self.trail_sl == False) and
-            self.df.loc[length]["low"] > self.breakeven):
+            # print('Base Index: ',base_index)
 
-            self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["close"]
-            self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length]["date"]
-            self.result.loc[self.result_len, "REASON"] = "NO MOVE"
-            self.sell_on = False
+            if ((length > (base_index + 12)) and (self.trail_sl == False) and
+                self.df.loc[length]["low"] > self.breakeven):
 
-        if current_candle == "R":
-            # TRG  and Trail SL condition
-
-            if self.df.loc[length]["low"] <= self.target:
-                # TRG
-
-                self.result.loc[self.result_len, "EXIT"] = self.target
-                self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
-                    "date"
-                ]
-                self.result.loc[self.result_len, "REASON"] = "TRG"
-                self.sell_on = False
-                self.trail_sl = False
-
-            # For Breakeven
-            elif self.df.loc[length]["low"] <= self.breakeven:
-                self.sl = self.df.loc[length]["EMA_8"]
-                self.trail_sl = True
-
-            # For trailing after Big Red Candle in breakeven
-
-            elif (
-                self.trail_sl == True
-                and (
-                    (self.df.loc[length]["open"] - self.df.loc[length]["close"])
-                    / self.df.loc[length]["close"]
-                )
-                * 100
-                >= 0.04
-            ):
-                self.sl = self.df.loc[length]["EMA_8"]
-
-            #               For Gap Up exit
-            elif self.sl <= self.df.loc[length]["open"]:
-                self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["open"]
-                self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
-                    "date"
-                ]
-
-                if self.trail_sl:
-                    self.result.loc[self.result_len, "REASON"] = "TRAIL_SL"
-                    self.trail_sl = False
-
-                else:
-                    self.result.loc[self.result_len, "REASON"] == "SL"
-
-                self.sell_on = False
-
-            # Red candle High hits SL
-            elif self.sl <= self.df.loc[length]["high"]:
-                self.result.loc[self.result_len, "EXIT"] = self.sl
-                self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
-                    "date"
-                ]
-
-                if self.trail_sl:
-                    self.result.loc[self.result_len, "REASON"] = "TRAIL_SL"
-                    self.trail_sl = False
-
-                else:
-                    self.result.loc[self.result_len, "REASON"] = "SL"
-
-                self.sell_on = False
-
-        elif current_candle == "G":
-            # SL condition
-
-            #                 For Gap UP
-            if self.sl <= self.df.loc[length]["open"]:
-                self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["open"]
-                self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
-                    "date"
-                ]
-
-                if self.trail_sl:
-                    self.result.loc[self.result_len, "REASON"] = "TRAIL_SL"
-                    self.trail_sl = False
-
-                else:
-                    self.result.loc[self.result_len, "REASON"] = "SL"
-
-                self.sell_on = False
-
-
-            elif (self.df.loc[length]["close"] > self.df.loc[length]["EMA_20"] and
-                length > (base_index + 5)):
                 self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["close"]
-                self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
-                    "date"
-                ]
-                self.result.loc[self.result_len, "REASON"] = "EMA_20"
-                self.trail_sl = False
+                self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length]["date"]
+                self.result.loc[self.result_len, "REASON"] = "NO MOVE"
                 self.sell_on = False
 
+                # Closing the order
+                mt5.Close(self.pair,ticket=self.order.order)
 
-            # Green candle low touches trg
-            elif self.target >= self.df.loc[length]["low"]:
-                self.result.loc[self.result_len, "EXIT"] = self.target
-                self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
-                    "date"
-                ]
-                self.result.loc[self.result_len, "REASON"] = "TRG"
-                self.sell_on = False
-                self.trail_sl = False
+            if current_candle == "R":
+                # TRG  and Trail SL condition
 
-            #                 For SL
-            elif self.sl <= self.df.loc[length]["high"]:
-                self.result.loc[self.result_len, "EXIT"] = self.sl
-                self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
-                    "date"
-                ]
-                if self.trail_sl:
-                    self.result.loc[self.result_len, "REASON"] = "TRAIL_SL"
+                if self.df.loc[length]["low"] <= self.target:
+                    # TRG
+
+                    self.result.loc[self.result_len, "EXIT"] = self.target
+                    self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
+                        "date"
+                    ]
+                    self.result.loc[self.result_len, "REASON"] = "TRG"
+                    self.sell_on = False
                     self.trail_sl = False
 
-                else:
-                    self.result.loc[self.result_len, "REASON"] = "SL"
+                # For Breakeven
+                elif self.df.loc[length]["low"] <= self.breakeven:
+                    self.sl = self.df.loc[length]["EMA_8"]
+                    self.trail_sl = True
 
-                self.sell_on = False
+                    # Update the order
+                    self.update_order()
 
-        if self.sell_on == False:
-            self.result.loc[self.result_len, "P/L"] = (
-                self.result.loc[self.result_len]["ENTRY"]
-                - self.result.loc[self.result_len]["EXIT"]
-            )
+                # For trailing after Big Red Candle in breakeven
 
-            self.result.loc[self.result_len, "REAL P/L"] = (
-                self.quantity
-                * self.one_pip_value
-                * self.result_pip_calc(
-                    self.result.loc[self.result_len]["ENTRY"],
-                    self.result.loc[self.result_len, "P/L"],
+                elif (
+                    self.trail_sl == True
+                    and (
+                        (self.df.loc[length]["open"] - self.df.loc[length]["close"])
+                        / self.df.loc[length]["close"]
+                    )
+                    * 100
+                    >= 0.04
+                ):
+                    self.sl = self.df.loc[length]["EMA_8"]
+
+                    # Update the order
+                    self.update_order()
+
+                #               For Gap Up exit
+                elif self.sl <= self.df.loc[length]["open"]:
+                    self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["open"]
+                    self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
+                        "date"
+                    ]
+
+                    if self.trail_sl:
+                        self.result.loc[self.result_len, "REASON"] = "TRAIL_SL"
+                        self.trail_sl = False
+
+                    else:
+                        self.result.loc[self.result_len, "REASON"] == "SL"
+
+                    self.sell_on = False
+
+                # Red candle High hits SL
+                elif self.sl <= self.df.loc[length]["high"]:
+                    self.result.loc[self.result_len, "EXIT"] = self.sl
+                    self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
+                        "date"
+                    ]
+
+                    if self.trail_sl:
+                        self.result.loc[self.result_len, "REASON"] = "TRAIL_SL"
+                        self.trail_sl = False
+
+                    else:
+                        self.result.loc[self.result_len, "REASON"] = "SL"
+
+                    self.sell_on = False
+
+            elif current_candle == "G":
+                # SL condition
+
+                #                 For Gap UP
+                if self.sl <= self.df.loc[length]["open"]:
+                    self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["open"]
+                    self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
+                        "date"
+                    ]
+
+                    if self.trail_sl:
+                        self.result.loc[self.result_len, "REASON"] = "TRAIL_SL"
+                        self.trail_sl = False
+
+                    else:
+                        self.result.loc[self.result_len, "REASON"] = "SL"
+
+                    self.sell_on = False
+
+
+                elif (self.df.loc[length]["close"] > self.df.loc[length]["EMA_20"] and
+                    length > (base_index + 5)):
+                    self.result.loc[self.result_len, "EXIT"] = self.df.loc[length]["close"]
+                    self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
+                        "date"
+                    ]
+                    self.result.loc[self.result_len, "REASON"] = "EMA_20"
+                    self.trail_sl = False
+                    self.sell_on = False
+
+                    # Closing the order
+                    mt5.Close(self.pair,ticket=self.order.order)
+
+
+                # Green candle low touches trg
+                elif self.target >= self.df.loc[length]["low"]:
+                    self.result.loc[self.result_len, "EXIT"] = self.target
+                    self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
+                        "date"
+                    ]
+                    self.result.loc[self.result_len, "REASON"] = "TRG"
+                    self.sell_on = False
+                    self.trail_sl = False
+
+                #                 For SL
+                elif self.sl <= self.df.loc[length]["high"]:
+                    self.result.loc[self.result_len, "EXIT"] = self.sl
+                    self.result.loc[self.result_len, "EXIT DATE"] = self.df.loc[length][
+                        "date"
+                    ]
+                    if self.trail_sl:
+                        self.result.loc[self.result_len, "REASON"] = "TRAIL_SL"
+                        self.trail_sl = False
+
+                    else:
+                        self.result.loc[self.result_len, "REASON"] = "SL"
+
+                    self.sell_on = False
+
+            if self.sell_on == False:
+                self.result.loc[self.result_len, "P/L"] = (
+                    self.result.loc[self.result_len]["ENTRY"]
+                    - self.result.loc[self.result_len]["EXIT"]
                 )
-            )
 
-            self.account += self.result.loc[self.result_len, "REAL P/L"]
+                self.result.loc[self.result_len, "REAL P/L"] = (
+                    self.quantity
+                    * self.one_pip_value
+                    * self.result_pip_calc(
+                        self.result.loc[self.result_len]["ENTRY"],
+                        self.result.loc[self.result_len, "P/L"],
+                    )
+                )
 
-            self.result.loc[self.result_len, "Acc"] = self.account
+        except Exception as e:
+            print(f"Manage Sell error: {e}")
 
-    def Caller(self, instrument):
+
+    def wait(self):
+
+        # Current candle time
+        time = self.df.iloc[-1]['date']
+
+
+
+        # print('Prev Time: ', time)
+
+        if self.sell_on == False and self.buy_on == False:
+            # When not in a trade
+            new_time = (time + timedelta(minutes=15) - timedelta(seconds=20))
+            print('No Trade')
+
+        else:
+            # In a trade
+            new_time = (time + timedelta(minutes=15) - timedelta(seconds=5))
+            print('In Trade')
+        
+
+        # Calculate the time difference in seconds
+        current_datetime = datetime.utcnow()
+
+        # print('Current Time: ', current_datetime)
+        # target_datetime = datetime(new_time.year, new_time.month, new_time.day, new_time.hour, new_time.minute, new_time.second)
+        time_difference = (new_time - current_datetime).total_seconds()
+        # print('New Time: ', new_time)
+        # print("Time Differenece: ",time_difference)
+        
+        # Calculate the wake-up time
+
+        wake_up_time = current_datetime + timedelta(seconds=time_difference)
+        print(f"Will wake up at: {wake_up_time}")
+
+        sleep(time_difference)
+        
+
+    
+
+    def Caller(self):
         # Initialize an empty DataFrame to store the past data that gets dropped
-        self.past_df = pd.DataFrame()
+        try:
+            
+            while True:
 
-        #         Loop for taking the live data
-        for index, row in self.df2.iterrows():
-            # Add live data to the df DataFrame
-            self.df = self.df.append(row, ignore_index=True)
-            # self.df = pd.concat([self.df, row], ignore_index=True)
+                # Wait for the next candle
+                self.wait()
+                
+                new_candle = pd.DataFrame( mt5.copy_rates_from(self.pair, mt5.TIMEFRAME_M15, datetime.utcnow(), 1))
 
-            # Delete the first row if the DataFrame has more than 202 rows
-            if len(self.df) > 500:
-                # Save the dropped row in past_df
-                self.past_df = self.past_df.append(self.df.iloc[0], ignore_index=True)
-                # self.past_df = pd.concat([self.past_df, self.df.iloc[0]], ignore_index=True)
+                new_candle['date'] = pd.to_datetime(new_candle['time'], unit='s')
+
+                new_candle = new_candle.drop(["spread", "real_volume", "tick_volume", "time"], axis="columns")
+
+                new_candle['date'] += timedelta(minutes=15)
+
+                print('Candle: ', new_candle)
+                    # Save the dropped row in past_df
+                self.df = self.df.append(new_candle, ignore_index=True)
+
+                # removoing new_candle
+                new_candle.drop(index=new_candle.index, inplace=True)
+
                 self.df = self.df.iloc[1:].reset_index(drop=True)
 
-            # Calculate indicators for the current state of df
-            self.calculate_indicators()
+                # Calculate indicators for the current state of df
+                self.calculate_indicators()
 
-            if self.buy_on == True:
-                self.manage_buy()
+                if self.buy_on == True:
+                    self.manage_buy()
 
-            elif self.sell_on == True:
-                self.manage_sell()
+                elif self.sell_on == True:
+                    self.manage_sell()
 
-            else:
-                #             Apply all entry conditions
-                self.check_conditions()
+                else:
+                # Apply all entry conditions
+                    self.check_conditions()
+                
+                    # Flushing result df everytime for memory
+                    self.result.iloc[:, :] = None
 
-        # Concatenate past_df and df to get the full dataset
-        self.result_df = pd.concat([self.past_df, self.df], ignore_index=True)
-
-        # Save the result_df to an Excel file
-        #         self.result_df.to_excel('combined.xlsx')
-
-        self.result.to_excel(f"{instrument}.xlsx")
+        except Exception as e:
+            print(f"Caller, error occurred in Caller: {e}")

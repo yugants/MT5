@@ -1,7 +1,7 @@
 import talib
 import pandas as pd
 import numpy as np
-from datetime import datetime, timedelta
+from datetime import datetime
 import datetime
 import MetaTrader5 as mt5
 import pandas_ta as ta

@@ -1,0 +1,1014 @@
+Will wake up at: 2023-11-02 09:29:40
+Candle:        open     high      low    close                date
+0  159.381  159.578  159.348  159.555 2023-11-02 09:30:00
+In Trade
+Current Time:  2023-11-02 09:29:40.613914
+New Time:  2023-11-02 09:44:55
+Time Differenece:  914.386086
+Will wake up at: 2023-11-02 09:44:55
+Candle:        open     high      low    close                date
+0  159.561  159.634  159.515  159.595 2023-11-02 09:45:00
+In Trade
+Current Time:  2023-11-02 09:44:55.130507
+New Time:  2023-11-02 09:59:55
+Time Differenece:  899.869493
+Will wake up at: 2023-11-02 09:59:55
+Candle:        open     high      low    close                date
+0  159.596  159.687  159.596  159.672 2023-11-02 10:00:00
+In Trade
+Current Time:  2023-11-02 09:59:55.137297
+New Time:  2023-11-02 10:14:55
+Time Differenece:  899.862703
+Will wake up at: 2023-11-02 10:14:55
+Candle:        open     high      low    close                date
+0  159.672  159.754  159.658  159.727 2023-11-02 10:15:00
+In Trade
+Current Time:  2023-11-02 10:14:55.141235
+New Time:  2023-11-02 10:29:55
+Time Differenece:  899.858765
+Will wake up at: 2023-11-02 10:29:55
+Candle:        open     high      low    close                date
+0  159.728  159.802  159.726  159.802 2023-11-02 10:30:00
+In Trade
+Current Time:  2023-11-02 10:29:55.140274
+New Time:  2023-11-02 10:44:55
+Time Differenece:  899.859726
+Will wake up at: 2023-11-02 10:44:55
+Candle:        open    high      low    close                date
+0  159.797  159.88  159.759  159.842 2023-11-02 10:45:00
+Update Order error: 'NoneType' object has no attribute 'retcode'
+In Trade
+Current Time:  2023-11-02 10:44:55.159160
+New Time:  2023-11-02 10:59:55
+Time Differenece:  899.84084
+Will wake up at: 2023-11-02 10:59:55
+Candle:        open     high      low    close                date
+0  159.839  159.956  159.818  159.904 2023-11-02 11:00:00
+Update Order error: 'NoneType' object has no attribute 'retcode'
+In Trade
+Current Time:  2023-11-02 10:59:55.200114
+New Time:  2023-11-02 11:14:55
+Time Differenece:  899.799886
+Will wake up at: 2023-11-02 11:14:55
+Candle:        open     high     low    close                date
+0  159.901  159.945  159.86  159.893 2023-11-02 11:15:00
+In Trade
+Current Time:  2023-11-02 11:14:55.183368
+New Time:  2023-11-02 11:29:55
+Time Differenece:  899.816632
+Will wake up at: 2023-11-02 11:29:55
+Candle:        open     high      low    close                date
+0  159.903  159.932  159.842  159.878 2023-11-02 11:30:00
+In Trade
+Current Time:  2023-11-02 11:29:55.191372
+New Time:  2023-11-02 11:44:55
+Time Differenece:  899.808628
+Will wake up at: 2023-11-02 11:44:55
+Candle:        open    high      low    close                date
+0  159.875  159.88  159.837  159.868 2023-11-02 11:45:00
+In Trade
+Current Time:  2023-11-02 11:44:55.196735
+New Time:  2023-11-02 11:59:55
+Time Differenece:  899.803265
+Will wake up at: 2023-11-02 11:59:55
+Candle:        open     high      low    close                date
+0  159.868  159.922  159.839  159.901 2023-11-02 12:00:00
+In Trade
+Current Time:  2023-11-02 11:59:55.152289
+New Time:  2023-11-02 12:14:55
+Time Differenece:  899.847711
+Will wake up at: 2023-11-02 12:14:55
+Candle:      open     high      low  close                date
+0  159.9  160.037  159.875  160.0 2023-11-02 12:15:00
+Manage Buy Order error: unsupported operand type(s) for -: 'float' and 'NoneType'
+No Trade
+Current Time:  2023-11-02 12:14:55.186599
+New Time:  2023-11-02 12:29:40
+Time Differenece:  884.813401
+Will wake up at: 2023-11-02 12:29:40
+Candle:        open     high      low    close                date
+0  160.004  160.056  159.914  159.924 2023-11-02 12:30:00
+No Trade
+Current Time:  2023-11-02 12:29:40.125520
+New Time:  2023-11-02 12:44:40
+Time Differenece:  899.87448
+Will wake up at: 2023-11-02 12:44:40
+Candle:        open     high      low    close                date
+0  159.934  160.006  159.791  159.952 2023-11-02 12:45:00
+No Trade
+Current Time:  2023-11-02 12:44:40.144497
+New Time:  2023-11-02 12:59:40
+Time Differenece:  899.855503
+Will wake up at: 2023-11-02 12:59:40
+Candle:        open     high      low    close                date
+0  159.942  160.027  159.907  159.931 2023-11-02 13:00:00
+No Trade
+Current Time:  2023-11-02 12:59:40.131103
+New Time:  2023-11-02 13:14:40
+Time Differenece:  899.868897
+Will wake up at: 2023-11-02 13:14:40
+Candle:        open     high      low    close                date
+0  159.947  159.956  159.809  159.809 2023-11-02 13:15:00
+No Trade
+Current Time:  2023-11-02 13:14:40.128675
+New Time:  2023-11-02 13:29:40
+Time Differenece:  899.871325
+Will wake up at: 2023-11-02 13:29:40
+Candle:        open     high      low    close                date
+0  159.818  159.975  159.769  159.971 2023-11-02 13:30:00
+In Trade
+Current Time:  2023-11-02 13:29:40.584081
+New Time:  2023-11-02 13:44:55
+Time Differenece:  914.415919
+Will wake up at: 2023-11-02 13:44:55
+Candle:        open     high      low    close                date
+0  159.967  160.077  159.939  159.948 2023-11-02 13:45:00
+In Trade
+Current Time:  2023-11-02 13:44:55.122936
+New Time:  2023-11-02 13:59:55
+Time Differenece:  899.877064
+Will wake up at: 2023-11-02 13:59:55
+Candle:        open     high      low    close                date
+0  159.957  160.019  159.945  159.952 2023-11-02 14:00:00
+In Trade
+Current Time:  2023-11-02 13:59:55.155709
+New Time:  2023-11-02 14:14:55
+Time Differenece:  899.844291
+Will wake up at: 2023-11-02 14:14:55
+Candle:        open     high      low    close                date
+0  159.963  160.011  159.822  159.853 2023-11-02 14:15:00
+In Trade
+Current Time:  2023-11-02 14:14:55.168023
+New Time:  2023-11-02 14:29:55
+Time Differenece:  899.831977
+Will wake up at: 2023-11-02 14:29:55
+Candle:        open    high      low    close                date
+0  159.852  159.91  159.845  159.862 2023-11-02 14:30:00
+In Trade
+Current Time:  2023-11-02 14:29:55.142045
+New Time:  2023-11-02 14:44:55
+Time Differenece:  899.857955
+Will wake up at: 2023-11-02 14:44:55
+Candle:        open     high      low    close                date
+0  159.863  159.894  159.815  159.855 2023-11-02 14:45:00
+In Trade
+Current Time:  2023-11-02 14:44:55.130994
+New Time:  2023-11-02 14:59:55
+Time Differenece:  899.869006
+Will wake up at: 2023-11-02 14:59:55
+Candle:        open     high      low    close                date
+0  159.846  159.947  159.834  159.911 2023-11-02 15:00:00
+In Trade
+Current Time:  2023-11-02 14:59:55.132904
+New Time:  2023-11-02 15:14:55
+Time Differenece:  899.867096
+Will wake up at: 2023-11-02 15:14:55
+Candle:        open     high      low    close                date
+0  159.904  160.008  159.873  159.977 2023-11-02 15:15:00
+In Trade
+Current Time:  2023-11-02 15:14:55.150215
+New Time:  2023-11-02 15:29:55
+Time Differenece:  899.849785
+Will wake up at: 2023-11-02 15:29:55
+Candle:        open     high      low    close                date
+0  159.978  160.007  159.834  159.879 2023-11-02 15:30:00
+In Trade
+Current Time:  2023-11-02 15:29:55.141746
+New Time:  2023-11-02 15:44:55
+Time Differenece:  899.858254
+Will wake up at: 2023-11-02 15:44:55
+Candle:        open     high      low    close                date
+0  159.876  159.889  159.803  159.846 2023-11-02 15:45:00
+In Trade
+Current Time:  2023-11-02 15:44:55.611250
+New Time:  2023-11-02 15:59:55
+Time Differenece:  899.38875
+Will wake up at: 2023-11-02 15:59:55
+Candle:       open     high      low    close                date
+0  159.85  159.862  159.771  159.781 2023-11-02 16:00:00
+In Trade
+Current Time:  2023-11-02 15:59:55.127394
+New Time:  2023-11-02 16:14:55
+Time Differenece:  899.872606
+Will wake up at: 2023-11-02 16:14:55
+Candle:        open     high      low    close                date
+0  159.775  159.814  159.728  159.752 2023-11-02 16:15:00
+In Trade
+Current Time:  2023-11-02 16:14:55.129371
+New Time:  2023-11-02 16:29:55
+Time Differenece:  899.870629
+Will wake up at: 2023-11-02 16:29:55
+Candle:       open     high      low    close                date
+0  159.75  159.792  159.742  159.755 2023-11-02 16:30:00
+Manage Buy Order error: unsupported operand type(s) for -: 'float' and 'NoneType'
+No Trade
+Current Time:  2023-11-02 16:29:55.138808
+New Time:  2023-11-02 16:44:40
+Time Differenece:  884.861192
+Will wake up at: 2023-11-02 16:44:40
+Candle:        open     high      low    close                date
+0  159.756  159.765  159.663  159.705 2023-11-02 16:45:00
+No Trade
+Current Time:  2023-11-02 16:44:40.181821
+New Time:  2023-11-02 16:59:40
+Time Differenece:  899.818179
+Will wake up at: 2023-11-02 16:59:40
+Candle:        open    high      low   close                date
+0  159.698  159.79  159.692  159.79 2023-11-02 17:00:00
+No Trade
+Current Time:  2023-11-02 16:59:40.204072
+New Time:  2023-11-02 17:14:40
+Time Differenece:  899.795928
+Will wake up at: 2023-11-02 17:14:40
+Candle:        open     high      low   close                date
+0  159.794  159.805  159.761  159.77 2023-11-02 17:15:00
+No Trade
+Current Time:  2023-11-02 17:14:40.147826
+New Time:  2023-11-02 17:29:40
+Time Differenece:  899.852174
+Will wake up at: 2023-11-02 17:29:40
+Candle:        open     high      low  close                date
+0  159.788  159.824  159.742  159.8 2023-11-02 17:30:00
+No Trade
+Current Time:  2023-11-02 17:29:40.162007
+New Time:  2023-11-02 17:44:40
+Time Differenece:  899.837993
+Will wake up at: 2023-11-02 17:44:40
+Candle:        open     high      low    close                date
+0  159.795  159.833  159.791  159.821 2023-11-02 17:45:00
+No Trade
+Current Time:  2023-11-02 17:44:40.182288
+New Time:  2023-11-02 17:59:40
+Time Differenece:  899.817712
+Will wake up at: 2023-11-02 17:59:40
+Candle:        open     high      low    close                date
+0  159.826  159.862  159.825  159.859 2023-11-02 18:00:00
+No Trade
+Current Time:  2023-11-02 17:59:40.203880
+New Time:  2023-11-02 18:14:40
+Time Differenece:  899.79612
+Will wake up at: 2023-11-02 18:14:40
+Candle:       open     high      low    close                date
+0  159.86  159.882  159.833  159.874 2023-11-02 18:15:00
+No Trade
+Current Time:  2023-11-02 18:14:40.170521
+New Time:  2023-11-02 18:29:40
+Time Differenece:  899.829479
+Will wake up at: 2023-11-02 18:29:40
+Candle:        open     high      low    close                date
+0  159.869  159.908  159.856  159.875 2023-11-02 18:30:00
+No Trade
+Current Time:  2023-11-02 18:29:40.166699
+New Time:  2023-11-02 18:44:40
+Time Differenece:  899.833301
+Will wake up at: 2023-11-02 18:44:40
+Candle:        open     high      low    close                date
+0  159.881  159.889  159.833  159.833 2023-11-02 18:45:00
+No Trade
+Current Time:  2023-11-02 18:44:40.176439
+New Time:  2023-11-02 18:59:40
+Time Differenece:  899.823561
+Will wake up at: 2023-11-02 18:59:40
+Candle:        open     high      low    close                date
+0  159.834  159.852  159.809  159.827 2023-11-02 19:00:00
+No Trade
+Current Time:  2023-11-02 18:59:40.152970
+New Time:  2023-11-02 19:14:40
+Time Differenece:  899.84703
+Will wake up at: 2023-11-02 19:14:40
+Candle:        open     high      low    close                date
+0  159.832  159.856  159.799  159.855 2023-11-02 19:15:00
+No Trade
+Current Time:  2023-11-02 19:14:40.151556
+New Time:  2023-11-02 19:29:40
+Time Differenece:  899.848444
+Will wake up at: 2023-11-02 19:29:40
+Candle:        open     high      low   close                date
+0  159.859  159.867  159.836  159.86 2023-11-02 19:30:00
+No Trade
+Current Time:  2023-11-02 19:29:40.206770
+New Time:  2023-11-02 19:44:40
+Time Differenece:  899.79323
+Will wake up at: 2023-11-02 19:44:40
+Candle:        open     high      low    close                date
+0  159.858  159.867  159.798  159.799 2023-11-02 19:45:00
+No Trade
+Current Time:  2023-11-02 19:44:40.198057
+New Time:  2023-11-02 19:59:40
+Time Differenece:  899.801943
+Will wake up at: 2023-11-02 19:59:40
+Candle:        open     high      low    close                date
+0  159.806  159.835  159.771  159.827 2023-11-02 20:00:00
+No Trade
+Current Time:  2023-11-02 19:59:40.193432
+New Time:  2023-11-02 20:14:40
+Time Differenece:  899.806568
+Will wake up at: 2023-11-02 20:14:40
+Candle:        open     high      low    close                date
+0  159.832  159.834  159.801  159.826 2023-11-02 20:15:00
+No Trade
+Current Time:  2023-11-02 20:14:40.182640
+New Time:  2023-11-02 20:29:40
+Time Differenece:  899.81736
+Will wake up at: 2023-11-02 20:29:40
+Candle:        open     high      low    close                date
+0  159.827  159.827  159.781  159.803 2023-11-02 20:30:00
+No Trade
+Current Time:  2023-11-02 20:29:40.179339
+New Time:  2023-11-02 20:44:40
+Time Differenece:  899.820661
+Will wake up at: 2023-11-02 20:44:40
+Candle:        open     high      low    close                date
+0  159.799  159.861  159.786  159.859 2023-11-02 20:45:00
+No Trade
+Current Time:  2023-11-02 20:44:40.237282
+New Time:  2023-11-02 20:59:40
+Time Differenece:  899.762718
+Will wake up at: 2023-11-02 20:59:40
+Candle:        open     high      low    close                date
+0  159.857  159.857  159.802  159.804 2023-11-02 21:00:00
+No Trade
+Current Time:  2023-11-02 20:59:40.214394
+New Time:  2023-11-02 21:14:40
+Time Differenece:  899.785606
+Will wake up at: 2023-11-02 21:14:40
+Candle:        open     high      low    close                date
+0  159.796  159.796  159.718  159.748 2023-11-02 21:15:00
+No Trade
+Current Time:  2023-11-02 21:14:40.182591
+New Time:  2023-11-02 21:29:40
+Time Differenece:  899.817409
+Will wake up at: 2023-11-02 21:29:40
+Candle:        open     high      low    close                date
+0  159.727  159.765  159.688  159.742 2023-11-02 21:30:00
+No Trade
+Current Time:  2023-11-02 21:29:40.154523
+New Time:  2023-11-02 21:44:40
+Time Differenece:  899.845477
+Will wake up at: 2023-11-02 21:44:40
+Candle:        open     high      low   close                date
+0  159.746  159.799  159.741  159.79 2023-11-02 21:45:00
+No Trade
+Current Time:  2023-11-02 21:44:40.174275
+New Time:  2023-11-02 21:59:40
+Time Differenece:  899.825725
+Will wake up at: 2023-11-02 21:59:40
+Candle:        open     high      low    close                date
+0  159.793  159.808  159.739  159.787 2023-11-02 22:00:00
+No Trade
+Current Time:  2023-11-02 21:59:40.329085
+New Time:  2023-11-02 22:14:40
+Time Differenece:  899.670915
+Will wake up at: 2023-11-02 22:14:40
+Candle:        open     high      low    close                date
+0  159.776  159.803  159.749  159.795 2023-11-02 22:15:00
+No Trade
+Current Time:  2023-11-02 22:14:40.161527
+New Time:  2023-11-02 22:29:40
+Time Differenece:  899.838473
+Will wake up at: 2023-11-02 22:29:40
+Candle:        open     high      low    close                date
+0  159.796  159.831  159.795  159.812 2023-11-02 22:30:00
+No Trade
+Current Time:  2023-11-02 22:29:40.176748
+New Time:  2023-11-02 22:44:40
+Time Differenece:  899.823252
+Will wake up at: 2023-11-02 22:44:40
+Candle:        open     high      low    close                date
+0  159.811  159.811  159.756  159.759 2023-11-02 22:45:00
+No Trade
+Current Time:  2023-11-02 22:44:40.216200
+New Time:  2023-11-02 22:59:40
+Time Differenece:  899.7838
+Will wake up at: 2023-11-02 22:59:40
+Candle:        open     high      low   close                date
+0  159.759  159.761  159.739  159.75 2023-11-02 23:00:00
+No Trade
+Current Time:  2023-11-02 22:59:40.203815
+New Time:  2023-11-02 23:14:40
+Time Differenece:  899.796185
+Will wake up at: 2023-11-02 23:14:40
+Candle:        open     high      low    close                date
+0  159.761  159.776  159.741  159.757 2023-11-02 23:15:00
+No Trade
+Current Time:  2023-11-02 23:14:40.296842
+New Time:  2023-11-02 23:29:40
+Time Differenece:  899.703158
+Will wake up at: 2023-11-02 23:29:40
+Candle:        open     high      low    close                date
+0  159.758  159.772  159.746  159.766 2023-11-02 23:30:00
+No Trade
+Current Time:  2023-11-02 23:29:40.190950
+New Time:  2023-11-02 23:44:40
+Time Differenece:  899.80905
+Will wake up at: 2023-11-02 23:44:40
+Candle:        open     high      low    close                date
+0  159.769  159.779  159.747  159.779 2023-11-02 23:45:00
+No Trade
+Current Time:  2023-11-02 23:44:40.187867
+New Time:  2023-11-02 23:59:40
+Time Differenece:  899.812133
+Will wake up at: 2023-11-02 23:59:40
+Candle:       open     high      low    close       date
+0  159.78  159.794  159.758  159.759 2023-11-03
+No Trade
+Current Time:  2023-11-02 23:59:40.167063
+New Time:  2023-11-03 00:14:40
+Time Differenece:  899.832937
+Will wake up at: 2023-11-03 00:14:40
+Candle:        open     high      low    close                date
+0  159.757  159.781  159.732  159.775 2023-11-03 00:15:00
+No Trade
+Current Time:  2023-11-03 00:14:40.219472
+New Time:  2023-11-03 00:29:40
+Time Differenece:  899.780528
+Will wake up at: 2023-11-03 00:29:40
+Candle:        open     high      low   close                date
+0  159.774  159.779  159.748  159.75 2023-11-03 00:30:00
+No Trade
+Current Time:  2023-11-03 00:29:40.235834
+New Time:  2023-11-03 00:44:40
+Time Differenece:  899.764166
+Will wake up at: 2023-11-03 00:44:40
+Candle:       open     high      low    close                date
+0  159.75  159.762  159.736  159.754 2023-11-03 00:45:00
+No Trade
+Current Time:  2023-11-03 00:44:40.144349
+New Time:  2023-11-03 00:59:40
+Time Differenece:  899.855651
+Will wake up at: 2023-11-03 00:59:40
+Candle:        open     high      low    close                date
+0  159.751  159.761  159.594  159.698 2023-11-03 01:00:00
+No Trade
+Current Time:  2023-11-03 00:59:40.212430
+New Time:  2023-11-03 01:14:40
+Time Differenece:  899.78757
+Will wake up at: 2023-11-03 01:14:40
+Candle:        open     high      low    close                date
+0  159.685  159.735  159.683  159.734 2023-11-03 01:15:00
+No Trade
+Current Time:  2023-11-03 01:14:40.163042
+New Time:  2023-11-03 01:29:40
+Time Differenece:  899.836958
+Will wake up at: 2023-11-03 01:29:40
+Candle:        open     high      low    close                date
+0  159.735  159.788  159.732  159.785 2023-11-03 01:30:00
+No Trade
+Current Time:  2023-11-03 01:29:40.206612
+New Time:  2023-11-03 01:44:40
+Time Differenece:  899.793388
+Will wake up at: 2023-11-03 01:44:40
+Candle:        open     high      low    close                date
+0  159.784  159.793  159.754  159.768 2023-11-03 01:45:00
+No Trade
+Current Time:  2023-11-03 01:44:40.174156
+New Time:  2023-11-03 01:59:40
+Time Differenece:  899.825844
+Will wake up at: 2023-11-03 01:59:40
+Candle:        open     high      low    close                date
+0  159.776  159.811  159.768  159.792 2023-11-03 02:00:00
+No Trade
+Current Time:  2023-11-03 01:59:40.205475
+New Time:  2023-11-03 02:14:40
+Time Differenece:  899.794525
+Will wake up at: 2023-11-03 02:14:40
+Candle:        open     high      low    close                date
+0  159.792  159.809  159.768  159.805 2023-11-03 02:15:00
+No Trade
+Current Time:  2023-11-03 02:14:40.176756
+New Time:  2023-11-03 02:29:40
+Time Differenece:  899.823244
+Will wake up at: 2023-11-03 02:29:40
+Candle:        open     high      low    close                date
+0  159.797  159.806  159.761  159.802 2023-11-03 02:30:00
+No Trade
+Current Time:  2023-11-03 02:29:40.200229
+New Time:  2023-11-03 02:44:40
+Time Differenece:  899.799771
+Will wake up at: 2023-11-03 02:44:40
+Candle:        open     high      low    close                date
+0  159.813  159.819  159.789  159.798 2023-11-03 02:45:00
+No Trade
+Current Time:  2023-11-03 02:44:40.182662
+New Time:  2023-11-03 02:59:40
+Time Differenece:  899.817338
+Will wake up at: 2023-11-03 02:59:40
+Candle:        open     high     low    close                date
+0  159.803  159.811  159.78  159.786 2023-11-03 03:00:00
+No Trade
+Current Time:  2023-11-03 02:59:40.203859
+New Time:  2023-11-03 03:14:40
+Time Differenece:  899.796141
+Will wake up at: 2023-11-03 03:14:40
+Candle:        open     high      low    close                date
+0  159.789  159.791  159.734  159.734 2023-11-03 03:15:00
+No Trade
+Current Time:  2023-11-03 03:14:40.167455
+New Time:  2023-11-03 03:29:40
+Time Differenece:  899.832545
+Will wake up at: 2023-11-03 03:29:40
+Candle:        open     high      low    close                date
+0  159.733  159.774  159.724  159.769 2023-11-03 03:30:00
+No Trade
+Current Time:  2023-11-03 03:29:40.166550
+New Time:  2023-11-03 03:44:40
+Time Differenece:  899.83345
+Will wake up at: 2023-11-03 03:44:40
+Candle:        open     high      low    close                date
+0  159.769  159.769  159.735  159.735 2023-11-03 03:45:00
+No Trade
+Current Time:  2023-11-03 03:44:40.180949
+New Time:  2023-11-03 03:59:40
+Time Differenece:  899.819051
+Will wake up at: 2023-11-03 03:59:40
+Candle:        open     high      low    close                date
+0  159.743  159.762  159.734  159.742 2023-11-03 04:00:00
+No Trade
+Current Time:  2023-11-03 03:59:40.241034
+New Time:  2023-11-03 04:14:40
+Time Differenece:  899.758966
+Will wake up at: 2023-11-03 04:14:40
+Candle:        open     high      low    close                date
+0  159.746  159.749  159.727  159.749 2023-11-03 04:15:00
+No Trade
+Current Time:  2023-11-03 04:14:40.177140
+New Time:  2023-11-03 04:29:40
+Time Differenece:  899.82286
+Will wake up at: 2023-11-03 04:29:40
+Candle:        open     high      low    close                date
+0  159.749  159.758  159.718  159.729 2023-11-03 04:30:00
+No Trade
+Current Time:  2023-11-03 04:29:40.162423
+New Time:  2023-11-03 04:44:40
+Time Differenece:  899.837577
+Will wake up at: 2023-11-03 04:44:40
+Candle:        open     high      low    close                date
+0  159.729  159.729  159.686  159.701 2023-11-03 04:45:00
+No Trade
+Current Time:  2023-11-03 04:44:40.262676
+New Time:  2023-11-03 04:59:40
+Time Differenece:  899.737324
+Will wake up at: 2023-11-03 04:59:40
+Candle:        open     high      low    close                date
+0  159.701  159.721  159.696  159.698 2023-11-03 05:00:00
+No Trade
+Current Time:  2023-11-03 04:59:40.217900
+New Time:  2023-11-03 05:14:40
+Time Differenece:  899.7821
+Will wake up at: 2023-11-03 05:14:40
+Candle:        open     high      low    close                date
+0  159.693  159.714  159.683  159.695 2023-11-03 05:15:00
+No Trade
+Current Time:  2023-11-03 05:14:40.191369
+New Time:  2023-11-03 05:29:40
+Time Differenece:  899.808631
+Will wake up at: 2023-11-03 05:29:40
+Candle:        open     high      low   close                date
+0  159.695  159.744  159.695  159.74 2023-11-03 05:30:00
+No Trade
+Current Time:  2023-11-03 05:29:40.187780
+New Time:  2023-11-03 05:44:40
+Time Differenece:  899.81222
+Will wake up at: 2023-11-03 05:44:40
+Candle:       open     high      low    close                date
+0  159.74  159.772  159.708  159.713 2023-11-03 05:45:00
+No Trade
+Current Time:  2023-11-03 05:44:40.139272
+New Time:  2023-11-03 05:59:40
+Time Differenece:  899.860728
+Will wake up at: 2023-11-03 05:59:40
+Candle:        open     high      low    close                date
+0  159.713  159.744  159.702  159.712 2023-11-03 06:00:00
+No Trade
+Current Time:  2023-11-03 05:59:40.207101
+New Time:  2023-11-03 06:14:40
+Time Differenece:  899.792899
+Will wake up at: 2023-11-03 06:14:40
+Candle:        open     high      low    close                date
+0  159.715  159.736  159.701  159.723 2023-11-03 06:15:00
+No Trade
+Current Time:  2023-11-03 06:14:40.195953
+New Time:  2023-11-03 06:29:40
+Time Differenece:  899.804047
+Will wake up at: 2023-11-03 06:29:40
+Candle:        open     high     low    close                date
+0  159.722  159.769  159.72  159.765 2023-11-03 06:30:00
+No Trade
+Current Time:  2023-11-03 06:29:40.266940
+New Time:  2023-11-03 06:44:40
+Time Differenece:  899.73306
+Will wake up at: 2023-11-03 06:44:40
+Candle:        open     high      low    close                date
+0  159.759  159.787  159.752  159.779 2023-11-03 06:45:00
+No Trade
+Current Time:  2023-11-03 06:44:40.203549
+New Time:  2023-11-03 06:59:40
+Time Differenece:  899.796451
+Will wake up at: 2023-11-03 06:59:40
+Candle:        open     high      low    close                date
+0  159.784  159.788  159.758  159.768 2023-11-03 07:00:00
+No Trade
+Current Time:  2023-11-03 06:59:40.157262
+New Time:  2023-11-03 07:14:40
+Time Differenece:  899.842738
+Will wake up at: 2023-11-03 07:14:40
+Candle:        open     high      low    close                date
+0  159.783  159.783  159.704  159.751 2023-11-03 07:15:00
+No Trade
+Current Time:  2023-11-03 07:14:40.178481
+New Time:  2023-11-03 07:29:40
+Time Differenece:  899.821519
+Will wake up at: 2023-11-03 07:29:40
+Candle:        open     high      low    close                date
+0  159.753  159.763  159.704  159.756 2023-11-03 07:30:00
+No Trade
+Current Time:  2023-11-03 07:29:40.184991
+New Time:  2023-11-03 07:44:40
+Time Differenece:  899.815009
+Will wake up at: 2023-11-03 07:44:40
+Candle:        open     high      low    close                date
+0  159.758  159.776  159.713  159.719 2023-11-03 07:45:00
+No Trade
+Current Time:  2023-11-03 07:44:40.209679
+New Time:  2023-11-03 07:59:40
+Time Differenece:  899.790321
+Will wake up at: 2023-11-03 07:59:40
+Candle:        open     high      low    close                date
+0  159.716  159.798  159.708  159.789 2023-11-03 08:00:00
+No Trade
+Current Time:  2023-11-03 07:59:40.164159
+New Time:  2023-11-03 08:14:40
+Time Differenece:  899.835841
+Will wake up at: 2023-11-03 08:14:40
+Candle:        open     high      low    close                date
+0  159.797  159.835  159.724  159.815 2023-11-03 08:15:00
+No Trade
+Current Time:  2023-11-03 08:14:40.188162
+New Time:  2023-11-03 08:29:40
+Time Differenece:  899.811838
+Will wake up at: 2023-11-03 08:29:40
+Candle:        open     high      low    close                date
+0  159.812  159.852  159.742  159.755 2023-11-03 08:30:00
+No Trade
+Current Time:  2023-11-03 08:29:40.313468
+New Time:  2023-11-03 08:44:40
+Time Differenece:  899.686532
+Will wake up at: 2023-11-03 08:44:40
+Candle:        open     high      low    close                date
+0  159.749  159.767  159.707  159.763 2023-11-03 08:45:00
+No Trade
+Current Time:  2023-11-03 08:44:40.214660
+New Time:  2023-11-03 08:59:40
+Time Differenece:  899.78534
+Will wake up at: 2023-11-03 08:59:40
+Candle:        open     high      low    close                date
+0  159.783  159.856  159.774  159.822 2023-11-03 09:00:00
+No Trade
+Current Time:  2023-11-03 08:59:40.312747
+New Time:  2023-11-03 09:14:40
+Time Differenece:  899.687253
+Will wake up at: 2023-11-03 09:14:40
+Candle:        open     high      low    close                date
+0  159.828  159.896  159.739  159.896 2023-11-03 09:15:00
+No Trade
+Current Time:  2023-11-03 09:14:40.180240
+New Time:  2023-11-03 09:29:40
+Time Differenece:  899.81976
+Will wake up at: 2023-11-03 09:29:40
+Candle:        open     high      low    close                date
+0  159.904  159.958  159.882  159.922 2023-11-03 09:30:00
+No Trade
+Current Time:  2023-11-03 09:29:40.211460
+New Time:  2023-11-03 09:44:40
+Time Differenece:  899.78854
+Will wake up at: 2023-11-03 09:44:40
+Candle:        open     high      low    close                date
+0  159.927  160.006  159.927  159.977 2023-11-03 09:45:00
+No Trade
+Current Time:  2023-11-03 09:44:40.248090
+New Time:  2023-11-03 09:59:40
+Time Differenece:  899.75191
+Will wake up at: 2023-11-03 09:59:40
+Candle:        open     high      low    close                date
+0  159.974  160.031  159.955  160.026 2023-11-03 10:00:00
+No Trade
+Current Time:  2023-11-03 09:59:40.218858
+New Time:  2023-11-03 10:14:40
+Time Differenece:  899.781142
+Will wake up at: 2023-11-03 10:14:40
+Candle:       open    high      low   close                date
+0  160.04  160.04  159.962  159.98 2023-11-03 10:15:00
+No Trade
+Current Time:  2023-11-03 10:14:40.174012
+New Time:  2023-11-03 10:29:40
+Time Differenece:  899.825988
+Will wake up at: 2023-11-03 10:29:40
+Candle:        open     high      low    close                date
+0  159.978  159.994  159.935  159.966 2023-11-03 10:30:00
+No Trade
+Current Time:  2023-11-03 10:29:40.190870
+New Time:  2023-11-03 10:44:40
+Time Differenece:  899.80913
+Will wake up at: 2023-11-03 10:44:40
+Candle:        open     high      low    close                date
+0  159.967  159.972  159.908  159.918 2023-11-03 10:45:00
+No Trade
+Current Time:  2023-11-03 10:44:40.171088
+New Time:  2023-11-03 10:59:40
+Time Differenece:  899.828912
+Will wake up at: 2023-11-03 10:59:40
+Candle:        open     high      low    close                date
+0  159.899  159.922  159.868  159.876 2023-11-03 11:00:00
+No Trade
+Current Time:  2023-11-03 10:59:40.217191
+New Time:  2023-11-03 11:14:40
+Time Differenece:  899.782809
+Will wake up at: 2023-11-03 11:14:40
+Candle:        open     high      low    close                date
+0  159.878  159.883  159.841  159.853 2023-11-03 11:15:00
+No Trade
+Current Time:  2023-11-03 11:14:40.196185
+New Time:  2023-11-03 11:29:40
+Time Differenece:  899.803815
+Will wake up at: 2023-11-03 11:29:40
+Candle:        open    high      low    close                date
+0  159.859  159.93  159.857  159.926 2023-11-03 11:30:00
+No Trade
+Current Time:  2023-11-03 11:29:40.194974
+New Time:  2023-11-03 11:44:40
+Time Differenece:  899.805026
+Will wake up at: 2023-11-03 11:44:40
+Candle:        open     high      low    close                date
+0  159.935  159.967  159.897  159.916 2023-11-03 11:45:00
+No Trade
+Current Time:  2023-11-03 11:44:40.313646
+New Time:  2023-11-03 11:59:40
+Time Differenece:  899.686354
+Will wake up at: 2023-11-03 11:59:40
+Candle:        open     high     low    close                date
+0  159.918  159.925  159.87  159.894 2023-11-03 12:00:00
+No Trade
+Current Time:  2023-11-03 11:59:40.173192
+New Time:  2023-11-03 12:14:40
+Time Differenece:  899.826808
+Will wake up at: 2023-11-03 12:14:40
+Candle:        open     high      low    close                date
+0  159.893  159.983  159.881  159.983 2023-11-03 12:15:00
+No Trade
+Current Time:  2023-11-03 12:14:40.187477
+New Time:  2023-11-03 12:29:40
+Time Differenece:  899.812523
+Will wake up at: 2023-11-03 12:29:40
+Candle:       open     high      low    close                date
+0  159.99  160.054  159.958  160.043 2023-11-03 12:30:00
+No Trade
+Current Time:  2023-11-03 12:29:40.218262
+New Time:  2023-11-03 12:44:40
+Time Differenece:  899.781738
+Will wake up at: 2023-11-03 12:44:40
+Candle:        open     high      low    close                date
+0  160.019  160.115  159.933  160.053 2023-11-03 12:45:00
+No Trade
+Current Time:  2023-11-03 12:44:40.183099
+New Time:  2023-11-03 12:59:40
+Time Differenece:  899.816901
+Will wake up at: 2023-11-03 12:59:40
+Candle:        open     high      low    close                date
+0  160.008  160.068  159.948  159.983 2023-11-03 13:00:00
+No Trade
+Current Time:  2023-11-03 12:59:40.201014
+New Time:  2023-11-03 13:14:40
+Time Differenece:  899.798986
+Will wake up at: 2023-11-03 13:14:40
+Candle:        open     high      low   close                date
+0  159.997  159.997  159.843  159.93 2023-11-03 13:15:00
+No Trade
+Current Time:  2023-11-03 13:14:40.155119
+New Time:  2023-11-03 13:29:40
+Time Differenece:  899.844881
+Will wake up at: 2023-11-03 13:29:40
+Candle:        open     high      low    close                date
+0  159.948  160.074  159.885  159.992 2023-11-03 13:30:00
+No Trade
+Current Time:  2023-11-03 13:29:40.198522
+New Time:  2023-11-03 13:44:40
+Time Differenece:  899.801478
+Will wake up at: 2023-11-03 13:44:40
+Candle:        open     high      low    close                date
+0  159.954  160.011  159.923  159.992 2023-11-03 13:45:00
+No Trade
+Current Time:  2023-11-03 13:44:40.210284
+New Time:  2023-11-03 13:59:40
+Time Differenece:  899.789716
+Will wake up at: 2023-11-03 13:59:40
+Candle:        open     high      low    close                date
+0  159.987  160.104  159.977  160.084 2023-11-03 14:00:00
+No Trade
+Current Time:  2023-11-03 13:59:40.206161
+New Time:  2023-11-03 14:14:40
+Time Differenece:  899.793839
+Will wake up at: 2023-11-03 14:14:40
+Candle:        open    high     low    close                date
+0  160.059  160.14  160.02  160.127 2023-11-03 14:15:00
+No Trade
+Current Time:  2023-11-03 14:14:40.323108
+New Time:  2023-11-03 14:29:40
+Time Differenece:  899.676892
+Will wake up at: 2023-11-03 14:29:40
+Candle:        open     high      low    close                date
+0  160.135  160.252  160.119  160.154 2023-11-03 14:30:00
+No Trade
+Current Time:  2023-11-03 14:29:40.178939
+New Time:  2023-11-03 14:44:40
+Time Differenece:  899.821061
+Will wake up at: 2023-11-03 14:44:40
+Candle:        open     high      low    close                date
+0  160.151  160.199  160.128  160.154 2023-11-03 14:45:00
+No Trade
+Current Time:  2023-11-03 14:44:40.231452
+New Time:  2023-11-03 14:59:40
+Time Differenece:  899.768548
+Will wake up at: 2023-11-03 14:59:40
+Candle:        open     high      low    close                date
+0  160.175  160.256  160.166  160.235 2023-11-03 15:00:00
+No Trade
+Current Time:  2023-11-03 14:59:40.175125
+New Time:  2023-11-03 15:14:40
+Time Differenece:  899.824875
+Will wake up at: 2023-11-03 15:14:40
+Candle:        open     high      low    close                date
+0  160.236  160.248  160.182  160.242 2023-11-03 15:15:00
+No Trade
+Current Time:  2023-11-03 15:14:40.182833
+New Time:  2023-11-03 15:29:40
+Time Differenece:  899.817167
+Will wake up at: 2023-11-03 15:29:40
+Candle:        open     high      low    close                date
+0  160.249  160.287  160.212  160.249 2023-11-03 15:30:00
+No Trade
+Current Time:  2023-11-03 15:29:40.178111
+New Time:  2023-11-03 15:44:40
+Time Differenece:  899.821889
+Will wake up at: 2023-11-03 15:44:40
+Candle:        open     high      low    close                date
+0  160.246  160.265  160.191  160.235 2023-11-03 15:45:00
+No Trade
+Current Time:  2023-11-03 15:44:40.185468
+New Time:  2023-11-03 15:59:40
+Time Differenece:  899.814532
+Will wake up at: 2023-11-03 15:59:40
+Candle:        open     high      low    close                date
+0  160.245  160.313  160.219  160.278 2023-11-03 16:00:00
+No Trade
+Current Time:  2023-11-03 15:59:40.363473
+New Time:  2023-11-03 16:14:40
+Time Differenece:  899.636527
+Will wake up at: 2023-11-03 16:14:40
+Candle:        open    high      low    close                date
+0  160.298  160.34  160.276  160.319 2023-11-03 16:15:00
+No Trade
+Current Time:  2023-11-03 16:14:40.228276
+New Time:  2023-11-03 16:29:40
+Time Differenece:  899.771724
+Will wake up at: 2023-11-03 16:29:40
+Candle:        open     high      low    close                date
+0  160.315  160.346  160.278  160.303 2023-11-03 16:30:00
+No Trade
+Current Time:  2023-11-03 16:29:40.203682
+New Time:  2023-11-03 16:44:40
+Time Differenece:  899.796318
+Will wake up at: 2023-11-03 16:44:40
+Candle:        open     high     low    close                date
+0  160.297  160.321  160.25  160.278 2023-11-03 16:45:00
+No Trade
+Current Time:  2023-11-03 16:44:40.229933
+New Time:  2023-11-03 16:59:40
+Time Differenece:  899.770067
+Will wake up at: 2023-11-03 16:59:40
+Candle:        open     high      low    close                date
+0  160.273  160.368  160.253  160.355 2023-11-03 17:00:00
+No Trade
+Current Time:  2023-11-03 16:59:40.185005
+New Time:  2023-11-03 17:14:40
+Time Differenece:  899.814995
+Will wake up at: 2023-11-03 17:14:40
+Candle:        open     high      low    close                date
+0  160.365  160.395  160.333  160.346 2023-11-03 17:15:00
+No Trade
+Current Time:  2023-11-03 17:14:40.161266
+New Time:  2023-11-03 17:29:40
+Time Differenece:  899.838734
+Will wake up at: 2023-11-03 17:29:40
+Candle:        open     high      low    close                date
+0  160.343  160.374  160.306  160.354 2023-11-03 17:30:00
+No Trade
+Current Time:  2023-11-03 17:29:40.164611
+New Time:  2023-11-03 17:44:40
+Time Differenece:  899.835389
+Will wake up at: 2023-11-03 17:44:40
+Candle:        open     high      low    close                date
+0  160.363  160.383  160.317  160.318 2023-11-03 17:45:00
+No Trade
+Current Time:  2023-11-03 17:44:40.156444
+New Time:  2023-11-03 17:59:40
+Time Differenece:  899.843556
+Will wake up at: 2023-11-03 17:59:40
+Candle:        open     high      low    close                date
+0  160.319  160.371  160.312  160.352 2023-11-03 18:00:00
+No Trade
+Current Time:  2023-11-03 17:59:40.149387
+New Time:  2023-11-03 18:14:40
+Time Differenece:  899.850613
+Will wake up at: 2023-11-03 18:14:40
+Candle:        open     high      low    close                date
+0  160.354  160.367  160.313  160.361 2023-11-03 18:15:00
+No Trade
+Current Time:  2023-11-03 18:14:40.149453
+New Time:  2023-11-03 18:29:40
+Time Differenece:  899.850547
+Will wake up at: 2023-11-03 18:29:40
+Candle:        open     high      low    close                date
+0  160.364  160.372  160.309  160.329 2023-11-03 18:30:00
+No Trade
+Current Time:  2023-11-03 18:29:40.166067
+New Time:  2023-11-03 18:44:40
+Time Differenece:  899.833933
+Will wake up at: 2023-11-03 18:44:40
+Candle:        open     high      low    close                date
+0  160.335  160.358  160.321  160.334 2023-11-03 18:45:00
+No Trade
+Current Time:  2023-11-03 18:44:40.149819
+New Time:  2023-11-03 18:59:40
+Time Differenece:  899.850181
+Will wake up at: 2023-11-03 18:59:40
+Candle:        open     high      low    close                date
+0  160.331  160.332  160.275  160.295 2023-11-03 19:00:00
+No Trade
+Current Time:  2023-11-03 18:59:40.216490
+New Time:  2023-11-03 19:14:40
+Time Differenece:  899.78351
+Will wake up at: 2023-11-03 19:14:40
+Candle:        open     high      low    close                date
+0  160.293  160.328  160.289  160.305 2023-11-03 19:15:00
+No Trade
+Current Time:  2023-11-03 19:14:40.175592
+New Time:  2023-11-03 19:29:40
+Time Differenece:  899.824408
+Will wake up at: 2023-11-03 19:29:40
+Candle:        open     high      low    close                date
+0  160.308  160.309  160.268  160.291 2023-11-03 19:30:00
+No Trade
+Current Time:  2023-11-03 19:29:40.163531
+New Time:  2023-11-03 19:44:40
+Time Differenece:  899.836469
+Will wake up at: 2023-11-03 19:44:40
+Candle:        open     high      low    close                date
+0  160.298  160.298  160.245  160.263 2023-11-03 19:45:00
+No Trade
+Current Time:  2023-11-03 19:44:40.142879
+New Time:  2023-11-03 19:59:40
+Time Differenece:  899.857121
+Will wake up at: 2023-11-03 19:59:40
+Candle:        open     high      low    close                date
+0  160.264  160.285  160.243  160.285 2023-11-03 20:00:00
+No Trade
+Current Time:  2023-11-03 19:59:40.154606
+New Time:  2023-11-03 20:14:40
+Time Differenece:  899.845394
+Will wake up at: 2023-11-03 20:14:40
+Candle:        open     high      low    close                date
+0  160.288  160.315  160.283  160.296 2023-11-03 20:15:00
+No Trade
+Current Time:  2023-11-03 20:14:40.142485
+New Time:  2023-11-03 20:29:40
+Time Differenece:  899.857515
+Will wake up at: 2023-11-03 20:29:40
+Candle:        open     high      low   close                date
+0  160.292  160.295  160.238  160.27 2023-11-03 20:30:00
+No Trade
+Current Time:  2023-11-03 20:29:40.162050
+New Time:  2023-11-03 20:44:40
+Time Differenece:  899.83795
+Will wake up at: 2023-11-03 20:44:40
+Candle:       open     high      low    close                date
+0  160.27  160.273  160.249  160.263 2023-11-03 20:45:00
+No Trade
+Current Time:  2023-11-03 20:44:40.147901
+New Time:  2023-11-03 20:59:40
+Time Differenece:  899.852099
+Will wake up at: 2023-11-03 20:59:40
+Candle:        open     high      low    close                date
+0  160.263  160.294  160.222  160.253 2023-11-03 21:00:00
+No Trade
+Current Time:  2023-11-03 20:59:40.193914
+New Time:  2023-11-03 21:14:40
+Time Differenece:  899.806086
+Will wake up at: 2023-11-03 21:14:40
+Candle:        open     high      low    close                date
+0  160.263  160.294  160.222  160.253 2023-11-03 21:00:00
+No Trade
+Current Time:  2023-11-03 21:14:40.226140
+New Time:  2023-11-03 21:14:40
+Time Differenece:  -0.22614
+Will wake up at: 2023-11-03 21:14:40
+Caller, error occurred in Caller: sleep length must be non-negative
