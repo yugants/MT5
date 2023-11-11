@@ -847,13 +847,13 @@ class LiveTrade:
                 request = {
                     "action": mt5.TRADE_ACTION_DEAL,
                     "symbol": self.pair,
-                    "volume": self.result.loc[self.result_len, "QUANTITY"], 
+                    "volume": float(self.result.loc[self.result_len, "QUANTITY"]), 
                     "type": mt5.ORDER_TYPE_BUY,
-                    "price": mt5.symbol_info_tick(self.pair).ask,
-                    "sl": self.result.loc[self.result_len, "S/L"], 
-                    "tp": self.result.loc[self.result_len, "SET_TRG"], 
+                    "price": float(mt5.symbol_info_tick(self.pair).ask),
+                    "sl": float(self.result.loc[self.result_len, "S/L"]), 
+                    "tp": float(self.result.loc[self.result_len, "SET_TRG"]), 
                     "deviation": 20, 
-                    "magic": self.magic, 
+                    "magic": int(self.magic), 
                     "comment": "python script buy",
                     "type_time": mt5.ORDER_TIME_GTC,
                     "type_filling": mt5.ORDER_FILLING_FOK,  # Change the filling mode here
@@ -871,13 +871,15 @@ class LiveTrade:
                     "sl": float(self.result.loc[self.result_len, "S/L"]), 
                     "tp": float(self.result.loc[self.result_len, "SET_TRG"]), 
                     "deviation": 20, 
-                    "magic": self.magic, 
+                    "magic": int(self.magic), 
                     "comment": "python script sell",
                     "type_time": mt5.ORDER_TIME_GTC,
                     "type_filling": mt5.ORDER_FILLING_FOK,  # Change the filling mode here
                 }
 
-            self.order = mt5.order_send(request)
+            order = mt5.order_send(request)
+
+            print('Order Placed: ', order)
 
         except Exception as e:
             print(f"Execute New Order, error in sending order: {e}")
@@ -910,13 +912,25 @@ class LiveTrade:
 
     def update_order(self):
 
+        positions = mt5.positions_get()
+
+        for i in positions:
+
+            if i[-3] == self.pair:
+                # Magic
+                magic = positions[0][6]
+                # ticket
+                order = positions[0][0]
+
+                break
+
         request = {
         'action' : mt5.TRADE_ACTION_SLTP,  # Type of trade operation
-        'position' : self.order.order, # Ticket of the position
+        'position' : order, # Ticket of the position
         'symbol' : self.pair,  # Symbol
         'sl' : float(self.sl),  # Stop Loss of the position
         'tp' : float(self.result.loc[self.result_len, "SET_TRG"]),  # Take Profit of the position
-        'magic' : self.magic  # MagicNumber of the position
+        'magic' : magic  # MagicNumber of the position
         }
 
         # Send the request
@@ -928,6 +942,33 @@ class LiveTrade:
 
         except Exception as e:
             print(f"Update Order error: {e}")
+
+
+
+    def close_trade(self):
+
+        # Close the Position
+
+        positions = mt5.positions_get()
+
+        if len(positions) > 0:
+            for i in positions:
+
+                if i[-3] == self.pair:
+                    # Magic
+                    # magic = positions[0][6]
+                    # ticket
+                    order = positions[0][0]
+
+                    mt5.Close(self.pair, ticket=order)
+
+                    print('Order closed!')
+
+                    break
+
+        else:
+
+            print('Close trade(): No orders to close.')
 
     def manage_buy(self):
         
@@ -950,7 +991,7 @@ class LiveTrade:
                 self.buy_on = False
 
                 # Closing the order
-                mt5.Close(self.pair,ticket=self.order.order)
+                self.close_trade()
                 
 
 
@@ -1058,7 +1099,7 @@ class LiveTrade:
                     self.result.loc[self.result_len, "REASON"] = "EMA_20"
                     
                     # Closing the order
-                    mt5.Close(self.pair,ticket=self.order.order)
+                    self.close_trade()
 
                     self.trail_sl = False
                     self.sell_on = False
@@ -1139,7 +1180,7 @@ class LiveTrade:
                 self.sell_on = False
 
                 # Closing the order
-                mt5.Close(self.pair,ticket=self.order.order)
+                self.close_trade()
 
             if current_candle == "R":
                 # TRG  and Trail SL condition
@@ -1242,7 +1283,7 @@ class LiveTrade:
                     self.sell_on = False
 
                     # Closing the order
-                    mt5.Close(self.pair,ticket=self.order.order)
+                    self.close_trade()
 
 
                 # Green candle low touches trg
