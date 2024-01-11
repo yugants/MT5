@@ -1,4 +1,4 @@
-from ForTime import LiveTrade
+from LiveCode2 import LiveTrade
 import warnings
 
 # Ignore all warnings

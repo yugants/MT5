@@ -1,4 +1,6 @@
+
 import talib
+import time
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
@@ -579,7 +581,15 @@ class LiveTrade:
 
         self.df.loc[length, "trade"] = self.check_trade(self.df.iloc[-1])
 
+        start_time = time.time()
+
         self.check_tradable(self.df.iloc[-1])
+
+        end_time = time.time()
+
+        elapsed_time = end_time - start_time
+
+        print(f"check_tradable Time: {elapsed_time} seconds")
 
         self.chart = self.df.loc[length]["open"] / 100 * 0.04
 
@@ -911,11 +921,41 @@ class LiveTrade:
 
         self.result.loc[self.result_len, "QUANTITY"] = self.quantity
 
+        start_time = time.time()
+
         self.calc_target()
 
+         
+        end_time = time.time()
+        # Calculate the elapsed time
+        elapsed_time = end_time - start_time
+
+        # Get the current time
+        current_time = datetime.now()
+
+        # Format and print the current time
+        formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
+        print(" calc_target Formatted Time:", formatted_time)
+
+        print(f"calc_target Time: {elapsed_time} seconds")
         # Call MT5 with order for Buying in quantity as lot size, and SL TRG
 
+        start_time = time.time()
+
         self.place_trade()
+
+        end_time = time.time()
+        # Calculate the elapsed time
+        elapsed_time = end_time - start_time
+
+        # Get the current time
+        current_time = datetime.now()
+
+        # Format and print the current time
+        formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
+        print("place_trade Formatted Time:", formatted_time)
+
+        print(f"place_trade Time: {elapsed_time} seconds")
 
 
     def update_order(self):
@@ -1399,6 +1439,8 @@ class LiveTrade:
 
                 # Wait for the next candle
                 self.wait()
+
+                start_time = time.time()
                 
                 new_candle = pd.DataFrame( mt5.copy_rates_from(self.pair, mt5.TIMEFRAME_M15, datetime.now(), 1))
 
@@ -1425,8 +1467,38 @@ class LiveTrade:
 
                 self.df = self.df.iloc[1:].reset_index(drop=True)
 
+                end_time = time.time()
+                
+                # Calculate the elapsed time
+                elapsed_time = end_time - start_time
+
+                # Get the current time
+                current_time = datetime.now()
+
+                # Format and print the current time
+                formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
+                print("To add new candle Formatted Time:", formatted_time)
+
+                print(f"To add new candle Time: {elapsed_time} seconds")
+
                 # Calculate indicators for the current state of df
+                start_time = time.time()
+
                 self.calculate_indicators()
+
+                # Record the end time
+                end_time = time.time()
+
+                # Calculate the elapsed time
+                elapsed_time = end_time - start_time
+                # Get the current time
+                current_time = datetime.now()
+
+                # Format and print the current time
+                formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
+                print("calculate_indicators Formatted Time:", formatted_time)
+
+                print(f"calculate_indicators Time: {elapsed_time} seconds")
 
                 # When trade is exited
                 trades = mt5.positions_get(
@@ -1435,6 +1507,7 @@ class LiveTrade:
                 if len(trades) == 0:
                     self.buy_on == False
                     self.sell_on == False
+
 
                 if self.buy_on == True:
                     self.manage_buy()

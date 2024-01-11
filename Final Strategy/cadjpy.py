@@ -1,5 +1,5 @@
 
-from LiveCode2 import LiveTrade
+from ForTime import LiveTrade
 import warnings
 
 # Ignore all warnings

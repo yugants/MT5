@@ -1428,14 +1428,6 @@ class LiveTrade:
                 # Calculate indicators for the current state of df
                 self.calculate_indicators()
 
-                # When trade is exited
-                trades = mt5.positions_get(
-                symbol=self.pair    
-                )
-                if len(trades) == 0:
-                    self.buy_on == False
-                    self.sell_on == False
-
                 if self.buy_on == True:
                     self.manage_buy()
 

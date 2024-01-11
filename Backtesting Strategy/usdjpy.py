@@ -1,9 +1,9 @@
-from Trend_Backtest import LiveTrade
+from Backtest_for_time import LiveTrade
 import warnings
 
 # Ignore all warnings
 warnings.filterwarnings("ignore")
 
-eurusd = LiveTrade(['USDJPY', 6.68275, 10000, 200])
+eurusd = LiveTrade(['USDJPY', 6.68275, 50000, 50])
 
 eurusd.Caller('USDJPY')
